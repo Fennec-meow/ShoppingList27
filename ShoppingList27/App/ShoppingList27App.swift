@@ -9,9 +9,15 @@ import SwiftUI
 
 @main
 struct ShoppingList27App: App {
+    @AppStorage("hasCompleteOnboarding") private var hasCompleteOnboarding = false
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if hasCompleteOnboarding {
+                ContentView()
+            } else {
+                WelcomeScreenView(hasCompletedOnboarding: $hasCompleteOnboarding)
+            }
         }
     }
 }

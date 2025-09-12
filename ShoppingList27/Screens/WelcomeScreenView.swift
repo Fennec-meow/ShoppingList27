@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct WelcomeScreenView: View {
+    @Binding var hasCompletedOnboarding: Bool
+    
     private enum Strings {
         static let header = "Добро пожаловать!"
         static let headline = "Никогда не забывайте,\nчто нужно купить"
@@ -42,7 +44,7 @@ struct WelcomeScreenView: View {
             Spacer()
             
             BaseButton(title: Strings.buttonTitle) {
-                
+                hasCompletedOnboarding = true
             }
             .padding(.bottom, 20)
         }
@@ -52,5 +54,6 @@ struct WelcomeScreenView: View {
 }
 
 #Preview {
-    WelcomeScreenView()
+    @Previewable @State var hasCompletedOnboarding = false
+    WelcomeScreenView(hasCompletedOnboarding: $hasCompletedOnboarding)
 }
