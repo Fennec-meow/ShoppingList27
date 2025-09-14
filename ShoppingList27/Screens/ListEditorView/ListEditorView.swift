@@ -7,7 +7,9 @@
 
 import SwiftUI
 
+/// Экран для создания новых списков и создания новых
 struct ListEditorView: View {
+    /// Флаг, определяющий режим работы экрана: true — редактирование, false — создание нового списка.
     let isEditing: Bool
     
     @State private var text: String = ""
