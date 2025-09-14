@@ -8,12 +8,11 @@
 import SwiftUI
 
 struct ProductCellView: View {
-    var product: ProductCellModel
-    let checked: () -> Void
+    var product: ProductModel
     
     var body: some View {
         HStack {
-            Button("", action: checked)
+            Button("", action: { product.isBought.toggle() })
                 .buttonStyle(.checkbox(isChecked: product.isBought))
             
             Group {
@@ -28,13 +27,13 @@ struct ProductCellView: View {
 
 #Preview {
     let productCellPreview = VStack(alignment: .leading, spacing: 20) {
-        ProductCellView(product: .mock1) {}
+        ProductCellView(product: .mock1)
             .padding(.horizontal, 28)
         Divider()
-        ProductCellView(product: .mock2) {}
+        ProductCellView(product: .mock2)
             .padding(.horizontal, 28)
         Divider()
-        ProductCellView(product: .mock3) {}
+        ProductCellView(product: .mock3)
             .padding(.horizontal, 28)
     }
     .frame(maxHeight: .infinity)
