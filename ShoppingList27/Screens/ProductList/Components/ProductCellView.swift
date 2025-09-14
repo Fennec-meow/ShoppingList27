@@ -8,22 +8,18 @@
 import SwiftUI
 
 struct ProductCellView: View {
-    private let product: ProductCellModel
-    
-    init(product: ProductCellModel) {
-        self.product = product
-    }
+    var product: ProductCellModel
+    let checked: () -> Void
     
     var body: some View {
         HStack {
-            Button("", action: { product.toggleChecked()})
+            Button("", action: checked)
                 .buttonStyle(.checkbox(isChecked: product.isBought))
             
             Group {
-                Text(product.product.name)
-                
+                Text(product.name)
                 Spacer()
-                Text("\(product.product.count) \(product.product.unitMeasure.shortName)")
+                Text("\(product.count) \(product.unitMeasure.shortName)")
             }
             .foregroundColor(product.isBought ? .greyList : .grey80)
         }
@@ -32,13 +28,13 @@ struct ProductCellView: View {
 
 #Preview {
     let productCellPreview = VStack(alignment: .leading, spacing: 20) {
-        ProductCellView(product: ProductCellModel(model: .mock1))
+        ProductCellView(product: .mock1) {}
             .padding(.horizontal, 28)
         Divider()
-        ProductCellView(product: ProductCellModel(model: .mock2))
+        ProductCellView(product: .mock2) {}
             .padding(.horizontal, 28)
         Divider()
-        ProductCellView(product: ProductCellModel(model: .mock3))
+        ProductCellView(product: .mock3) {}
             .padding(.horizontal, 28)
     }
     .frame(maxHeight: .infinity)
