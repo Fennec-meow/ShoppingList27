@@ -8,11 +8,48 @@
 import SwiftUI
 
 struct ListEditorView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+    let isEditing: Bool
+    
+    @State private var text: String = ""
+    @State private var selectedColor: Color?
+    @State private var selectedIcon: String?
+    
+    private var buttonTitle: String {
+        isEditing ? "Сохранить" : "Создать"
     }
+    private var isButtonEnabled: Bool {
+        !text.isEmpty && selectedColor != nil && selectedIcon != nil
+    }
+    private let errorText = "Это название уже используется, пожалуйста, измените его."
+    private let placeholder = "Введите название списка"
+    
+    var body: some View {
+        VStack {
+            VStack(spacing: 24) {
+                BaseTextField(
+                    text: $text,
+                    placeholder: placeholder,
+                    hasError: false,
+                    errorText: errorText
+                )
+                ColorPickerView(selectedColor: $selectedColor)
+                DesignSelector(selectedIcon: $selectedIcon, selectionColor: selectedColor)
+            }
+            .padding(.top, 12)
+            
+            Spacer()
+            
+            BaseButton(isActive: isButtonEnabled, title: buttonTitle) {
+                // Метод сохранения списка в БД
+            }
+            .padding(.bottom, 20)
+        }
+        .padding(.horizontal, 16)
+    }
+    
 }
 
 #Preview {
-    ListEditorView()
+    ListEditorView(isEditing: false)
+        .background(Color.backgroundScreen)
 }
