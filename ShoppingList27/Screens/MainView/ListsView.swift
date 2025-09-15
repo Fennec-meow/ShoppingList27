@@ -49,10 +49,10 @@ struct ListsMainView: View {
                 createListButton
             }
         } else {
-            ZStack(alignment: .bottom) {
-                listsScrollView
-                createListButton
-            }
+            listsScrollView
+                .safeAreaInset(edge: .bottom) {
+                    createListButton
+                }
         }
     }
     
@@ -65,7 +65,6 @@ struct ListsMainView: View {
             }
             .padding(.horizontal, 16)
             .padding(.top, 12)
-            .padding(.bottom, 76)
         }
     }
     
@@ -76,7 +75,7 @@ struct ListsMainView: View {
             isCreatingNewList = true
         })
         .padding(.horizontal, 16)
-        .padding(.vertical, 20)
+        .padding(.bottom, 20)
     }
     
     private var titleView: some View {
