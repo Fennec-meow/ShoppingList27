@@ -62,7 +62,6 @@ struct ListsMainView: View {
                     ListItemView(item: list)
                         .padding(.bottom, bottomPadding(for: list))
                 }
-                Spacer()
             }
             .padding(.horizontal, 16)
             .padding(.top, 12)
