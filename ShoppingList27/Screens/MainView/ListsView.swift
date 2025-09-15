@@ -46,13 +46,7 @@ struct ListsMainView: View {
             } else {
                 listsScrollView
             }
-            BaseButton(title: Strings.createList,
-                       action: {
-                print("CreatingNewList")
-                isCreatingNewList = true
-            })
-            .padding(.horizontal, 16)
-            .padding(.bottom, 20)
+            createListButton
         }
     }
     
@@ -72,6 +66,16 @@ struct ListsMainView: View {
             .padding(.horizontal, 16)
             .padding(.top, 12)
         }
+    }
+    
+    private var createListButton: some View {
+        BaseButton(title: Strings.createList,
+                   action: {
+            print("CreatingNewList")
+            isCreatingNewList = true
+        })
+        .padding(.horizontal, 16)
+        .padding(.vertical, 20)
     }
     
     private var titleView: some View {
