@@ -39,19 +39,20 @@ struct ListsMainView: View {
     
     @ViewBuilder
     private var content: some View {
-        ZStack(alignment: .bottom) {
-            if viewModel.shouldDisplayPlaceholder {
-                placeholderView
-                    .frame(maxHeight: .infinity)
-            } else {
-                listsScrollView
+        if viewModel.shouldDisplayPlaceholder {
+            VStack {
+                Spacer()
+                EmptyListPlaceholderView()
+                Spacer()
+                Spacer()
+                createListButton
             }
-            createListButton
+        } else {
+            ZStack(alignment: .bottom) {
+                listsScrollView
+                createListButton
+            }
         }
-    }
-    
-    private var placeholderView: some View {
-        Text("Placeholder")
     }
     
     private var listsScrollView: some View {
