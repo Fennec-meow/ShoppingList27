@@ -108,7 +108,7 @@ struct ListsMainView: View {
 // MARK: - Extension - Constants
 private extension ListsMainView {
     enum Strings {
-        static let title = "Мои Списки"
+        static let title = "Мои списки"
         static let createList = "Создать список"
     }
     enum ImageTitles {
