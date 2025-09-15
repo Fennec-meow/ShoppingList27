@@ -45,7 +45,6 @@ struct ListsMainView: View {
                 EmptyListPlaceholderView()
                     .padding(.horizontal, 16)
                 Spacer()
-                Spacer()
                 createListButton
             }
         } else {
