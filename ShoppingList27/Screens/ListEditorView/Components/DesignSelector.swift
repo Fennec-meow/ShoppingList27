@@ -8,17 +8,11 @@
 import SwiftUI
 
 struct DesignSelector: View {
-    @Binding var selectedIcon: String
+    @Binding var selectedIcon: String?
+    let selectionColor: Color?
     
-    var selectionColor: Color?
-    
-    private var titleText: String = "Выберите дизайн"
-    private var titleFont = Font.system(size: 16, weight: .regular)
-    
-    init(selectedIcon: Binding<String>, selectionColor: Color?) {
-        self._selectedIcon = selectedIcon
-        self.selectionColor = selectionColor
-    }
+    private let titleText: String = "Выберите дизайн"
+    private let titleFont = Font.system(size: 16, weight: .regular)
     
     var body: some View {
         mainView
@@ -30,10 +24,10 @@ struct DesignSelector: View {
     
     private var mainView: some View {
         VStack(alignment: .leading, spacing: 12) {
-                title
-            .padding(.horizontal, 12)
+            title
+                .padding(.horizontal, 12)
             iconsGrid
-            .padding(.horizontal, 4)
+                .padding(.horizontal, 4)
         }
         .padding(.vertical, 12)
     }
@@ -66,7 +60,7 @@ struct DesignSelector: View {
                                        maxColumnWidth: maxColumnWidth),
                   alignment: .center,
                   spacing: 12) {
-
+            
             ForEach(Icons.allCases, id: \.self) { icon in
                 let iconName = icon.rawValue
                 Button {
@@ -83,9 +77,9 @@ struct DesignSelector: View {
 }
 
 #Preview {
-    @Previewable @State var selection: String = ""
+    @Previewable @State var selection: String?
     let selectionColor: Color? = .addGreen
-
+    
     VStack {
         ZStack {
             Color.backgroundScreen
@@ -101,8 +95,4 @@ struct DesignSelector: View {
         .colorScheme(.dark)
     }
     .ignoresSafeArea()
-    
-    .onChange(of: selection) {
-        print(selection)
-    }
 }
