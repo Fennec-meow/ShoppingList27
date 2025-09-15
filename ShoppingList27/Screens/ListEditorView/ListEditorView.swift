@@ -47,11 +47,10 @@ struct ListEditorView: View {
             .padding(.bottom, 20)
         }
         .padding(.horizontal, 16)
+        .background(Color.backgroundScreen)
     }
-    
 }
 
 #Preview {
     ListEditorView(isEditing: false)
-        .background(Color.backgroundScreen)
 }
