@@ -40,13 +40,12 @@ struct ListsMainView: View {
     @ViewBuilder
     private var content: some View {
         if viewModel.shouldDisplayPlaceholder {
-            VStack {
-                Spacer()
-                EmptyListPlaceholderView()
-                    .padding(.horizontal, 16)
-                Spacer()
-                createListButton
-            }
+            EmptyListPlaceholderView()
+                .padding(.horizontal, 16)
+                .frame(maxHeight: .infinity)
+                .safeAreaInset(edge: .bottom) {
+                    createListButton
+                }
         } else {
             listsScrollView
                 .safeAreaInset(edge: .bottom) {
