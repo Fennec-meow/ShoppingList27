@@ -43,6 +43,7 @@ struct ListsMainView: View {
             VStack {
                 Spacer()
                 EmptyListPlaceholderView()
+                    .padding(.horizontal, 16)
                 Spacer()
                 Spacer()
                 createListButton
