@@ -17,8 +17,10 @@ struct ProductCellView: View {
             
             Group {
                 Text(product.name)
+                    .font(Font.Body.regular)
                 Spacer()
                 Text("\(product.count) \(product.unitMeasure.shortName)")
+                    .font(Font.Body.regular)
             }
             .foregroundColor(product.isBought ? .greyList : .grey80)
         }
