@@ -60,11 +60,11 @@ struct ListsMainView: View {
             LazyVStack(alignment: .center, spacing: 12) {
                 ForEach(viewModel.lists) { list in
                     ListItemView(item: list)
-                        .padding(.bottom, bottomPadding(for: list))
                 }
             }
             .padding(.horizontal, 16)
             .padding(.top, 12)
+            .padding(.bottom, 76)
         }
     }
     
@@ -89,12 +89,6 @@ struct ListsMainView: View {
              systemImage: ImageTitles.settingsMenu,
              content: { })
         .tint(Color.grey80)
-    }
-    
-    // MARK: - Private Methods
-    
-    private func bottomPadding(for list: ListItem) -> CGFloat {
-        list.id == viewModel.lists.last?.id ? 56 : 0
     }
     
     // MARK: - Initializer
