@@ -78,7 +78,7 @@ struct ListsMainView: View {
     
     private var titleView: some View {
         Text(Strings.title)
-            .font(Fonts.semiBold28)
+            .font(.Title1.semiBold)
             .foregroundStyle(Color.grey80)
     }
     
@@ -105,10 +105,6 @@ private extension ListsMainView {
     }
     enum ImageTitles {
         static let settingsMenu = "ellipsis.circle"
-    }
-    enum Fonts {
-        static let semiBold28: Font = .system(size: 28,
-                                              weight: .semibold)
     }
 }
 
