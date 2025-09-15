@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct ProductCellView: View {
-    var product: ProductModel
+    var product: Product
     
     var body: some View {
         HStack {
-            Button("", action: { product.isBought.toggle() })
+            Button("", action: { product.toggleBought() })
                 .buttonStyle(.checkbox(isChecked: product.isBought))
             
             Group {
