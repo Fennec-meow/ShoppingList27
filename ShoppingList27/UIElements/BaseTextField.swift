@@ -7,13 +7,13 @@ struct BaseTextField: View {
     let hasError: Bool
     let errorText: String?
     var keyboardType: UIKeyboardType = .numberPad
-
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 TextField(placeholder, text: $text)
                     .tint(.uniTurquoise)
-                    .font(.system(size: 17))
+                    .font(.Body.regular)
                     .foregroundColor(.grey80)
                     .keyboardType(keyboardType)
                 
@@ -36,7 +36,7 @@ struct BaseTextField: View {
             
             if hasError, let errorText = errorText {
                 Text(errorText)
-                    .font(.system(size: 13))
+                    .font(.Footnote.regular)
                     .padding(.horizontal, 8)
                     .foregroundColor(.uniRed)
             }

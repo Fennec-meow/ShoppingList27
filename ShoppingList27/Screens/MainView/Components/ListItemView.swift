@@ -10,11 +10,7 @@ import SwiftUI
 struct ListItemView: View {
     
     let item: ListItem
-    
-    private let titleFont: Font = Font.system(size: 20, weight: .medium)
-    private let labelFont: Font = Font.system(size: 17, weight: .regular)
-    private let spanFont: Font = Font.system(size: 17, weight: .medium)
-    
+        
     var body: some View {
         HStack(spacing: 0) {
             
@@ -30,15 +26,15 @@ struct ListItemView: View {
             }
             
             Text(item.title)
-                .font(titleFont)
+                .font(.Title3.medium)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 12)
             
             Text("\(item.currentCount)")
-                .font(labelFont)
+                .font(.Body.regular)
             Text("/")
             Text("\(item.totalCount)")
-                .font(spanFont)
+                .font(.Headline.medium)
             
         }
         .padding(.horizontal)
