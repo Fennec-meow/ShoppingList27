@@ -36,10 +36,12 @@ struct EmptyProductListView: View {
     private var title: some View {
         Text("Давайте спланируем покупки!")
             .font(titleFont)
+            .foregroundStyle(.grey80)
     }
     
     private var subtitle: some View {
         Text("Начните добавлять товары")
             .font(subtitleFont)
+            .foregroundStyle(.grey80)
     }
 }
