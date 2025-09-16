@@ -12,12 +12,10 @@ struct BaseButton: View {
     let title: String
     let action: () -> Void
     
-    private let titleFont: Font = Font.system(size: 17, weight: .medium)
-    
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(titleFont)
+                .font(.Headline.medium)
                 .foregroundStyle(isActive ? Color.white : Color.hint)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 12)
@@ -35,10 +33,15 @@ struct BaseButton: View {
     let action = { print("I was tapped!") }
     
     VStack {
-        BaseButton(title: title, action: action)
-        BaseButton(isActive: false,
-                   title: title,
-                   action: action)
+        BaseButton(
+            title: title,
+            action: action
+        )
+        BaseButton(
+            isActive: false,
+            title: title,
+            action: action
+        )
     }
     .padding(.horizontal, 16)
 }

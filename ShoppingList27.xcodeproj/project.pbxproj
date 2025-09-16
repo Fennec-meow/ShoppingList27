@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		CE6B56142E6EC829008FCABC /* Exceptions for "ShoppingList27" folder in "ShoppingList27" target */ = {
+		CEE2980B2E71C7AF00A522AE /* Exceptions for "ShoppingList27" folder in "ShoppingList27" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -24,7 +24,7 @@
 		11A259BF2E65BBA500507933 /* ShoppingList27 */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				CE6B56142E6EC829008FCABC /* Exceptions for "ShoppingList27" folder in "ShoppingList27" target */,
+				CEE2980B2E71C7AF00A522AE /* Exceptions for "ShoppingList27" folder in "ShoppingList27" target */,
 			);
 			path = ShoppingList27;
 			sourceTree = "<group>";

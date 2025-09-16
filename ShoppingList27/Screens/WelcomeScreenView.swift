@@ -21,7 +21,7 @@ struct WelcomeScreenView: View {
         VStack {
             VStack(spacing: 48) {
                 Text(Strings.header)
-                    .font(.system(size: 41))
+                    .font(.LargeTitle.regular)
                     .lineLimit(1)
                     .minimumScaleFactor(0.9)
                     .padding(.top, 40)
@@ -33,10 +33,10 @@ struct WelcomeScreenView: View {
                 
                 VStack(spacing: 12) {
                     Text(Strings.headline)
-                        .font(.system(size: 28, weight: .semibold))
+                        .font(.Title2.semiBold)
                     
                     Text(Strings.subHeadline)
-                        .font(.system(size: 22))
+                        .font(.Body.regular)
                 }
                 .multilineTextAlignment(.center)
             }
