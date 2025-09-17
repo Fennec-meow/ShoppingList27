@@ -1,5 +1,5 @@
 //
-//  ListsViewModel.swift
+//  ListsMainViewModel.swift
 //  ShoppingList27
 //
 //  Created by Vladimir on 11.09.2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-final class ListsViewModel: ObservableObject {
+final class ListsMainViewModel: ObservableObject {
     
     // MARK: - Internal Properties
     

@@ -1,5 +1,5 @@
 //
-//  ListsView.swift
+//  ListsMainView.swift
 //  ShoppingList27
 //
 //  Created by Vladimir on 11.09.2025.
@@ -12,7 +12,7 @@ struct ListsMainView: View {
     
     // MARK: - Private Properties
     
-    @ObservedObject private var viewModel: ListsViewModel
+    @ObservedObject private var viewModel: ListsMainViewModel
     @State private var isCreatingNewList: Bool = false
     
     // MARK: - Body
@@ -95,7 +95,7 @@ struct ListsMainView: View {
     
     // MARK: - Initializer
     
-    init(viewModel: ListsViewModel) {
+    init(viewModel: ListsMainViewModel) {
         self.viewModel = viewModel
     }
     
@@ -114,7 +114,7 @@ private extension ListsMainView {
 
 // MARK: - Preview - Data
 #Preview("Data") {
-    let viewModel = ListsViewModel()
+    let viewModel = ListsMainViewModel()
     viewModel.insert(list: .mock)
     viewModel.insert(list: .mock2)
     viewModel.insert(list: .mock3)
@@ -129,6 +129,6 @@ private extension ListsMainView {
 
 // MARK: - Preview - Empty
 #Preview("Empty") {
-    let viewModel = ListsViewModel()
+    let viewModel = ListsMainViewModel()
     return ListsMainView(viewModel: viewModel)
 }
