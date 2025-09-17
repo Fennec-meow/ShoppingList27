@@ -63,9 +63,10 @@ struct ListsMainView: View {
             .listRowInsets(EdgeInsets())
             .listRowBackground(Color.backgroundScreen)
         }
-        .padding(.horizontal, 16)
         .listRowSpacing(12)
-        .safeAreaPadding(.top, 12)
+        .safeAreaPadding(.top, 12) // for top spacing
+        .safeAreaPadding(.leading, 16) // for swipe actions
+        .padding(.trailing, 16) // for swipe actions
         .listStyle(.plain)
         .scrollIndicators(.hidden)
     }
