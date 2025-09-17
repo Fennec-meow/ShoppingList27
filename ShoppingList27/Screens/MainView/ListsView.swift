@@ -55,15 +55,19 @@ struct ListsMainView: View {
     }
     
     private var listsScrollView: some View {
-        ScrollView {
-            LazyVStack(alignment: .center, spacing: 12) {
-                ForEach(viewModel.lists) { list in
-                    ListItemView(item: list)
-                }
+        List {
+            ForEach(viewModel.lists) { list in
+                ListItemView(item: list)
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 12)
+            .listRowSeparator(.hidden)
+            .listRowInsets(EdgeInsets())
+            .listRowBackground(Color.backgroundScreen)
         }
+        .padding(.horizontal, 16)
+        .listRowSpacing(12)
+        .safeAreaPadding(.top, 12)
+        .listStyle(.plain)
+        .scrollIndicators(.hidden)
     }
     
     private var createListButton: some View {
