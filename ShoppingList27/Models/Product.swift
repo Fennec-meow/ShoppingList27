@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+// TODO: Думаю стоит повыносить моки в отедльный файл в той же папке
 
 // Для выбора ед. изм. в дальнейшем
 enum UnitOfMeasure: String, CaseIterable, Identifiable {
@@ -25,10 +26,10 @@ enum UnitOfMeasure: String, CaseIterable, Identifiable {
 @Observable
 final class Product: Identifiable {
     var id: UUID = UUID()
-    var name: String
-    var count: Int
-    var unitMeasure: UnitOfMeasure
-    private(set) var isBought: Bool
+    var name: String                // ✅
+    var count: Int                  // ✅ Кол-во выбранное для покупки
+    var unitMeasure: UnitOfMeasure  // ✅ Единицы измерения выбранные при записи 
+    private(set) var isBought: Bool // ✅
     
     init(
         name: String,

@@ -9,6 +9,7 @@ import SwiftUI
 
 // MARK: - ListsMainView
 struct ListsMainView: View {
+    //TODO: Тут будет quary массив моделей списков
     
     // MARK: - Private Properties
     
@@ -116,16 +117,7 @@ private extension ListsMainView {
 // MARK: - Preview - Data
 #Preview("Data") {
     let viewModel = ListsMainViewModel()
-    viewModel.insert(list: .mock)
-    viewModel.insert(list: .mock2)
-    viewModel.insert(list: .mock3)
-    viewModel.insert(list: .mock)
-    viewModel.insert(list: .mock2)
-    viewModel.insert(list: .mock3)
-    viewModel.insert(list: .mock)
-    viewModel.insert(list: .mock2)
-    viewModel.insert(list: .mock3)
-    return ListsMainView(viewModel: viewModel)
+    ListsMainView(viewModel: viewModel)
 }
 
 // MARK: - Preview - Empty

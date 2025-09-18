@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ListItemView: View {
     
-    let item: ListItem
+    let item: ShoppingList
         
     var body: some View {
         HStack(spacing: 0) {
@@ -45,11 +45,7 @@ struct ListItemView: View {
 }
 
 #Preview {
-    VStack {
-        ListItemView(item: ListItem.mock)
-        ListItemView(item: ListItem.mock2)
-        ListItemView(item: ListItem.mock3)
-    }
+    ListItemView(item: ShoppingListSample.contents[0])
     .padding(.horizontal)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .background(Color.backgroundScreen)
