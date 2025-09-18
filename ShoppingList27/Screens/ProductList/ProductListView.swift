@@ -8,13 +8,16 @@
 import SwiftUI
 
 struct ProductListView: View {
-    let listName: String
-    let products: [Product]
     
-    @State private var searchedProductName: String = ""
+    @State var viewModel: ProductListViewModelProtocol
+    
     @Environment(\.dismiss) private var dismiss
     
     private let backButtonTitleFont: Font = Font.Headline.medium
+    
+    init(listName: String, viewModel: ProductListViewModelProtocol? = nil) {
+        self.viewModel = viewModel ?? ProductListViewModel(listName: listName)
+    }
     
     var body: some View {
         mainView
@@ -33,24 +36,28 @@ struct ProductListView: View {
         ZStack(alignment: .bottom) {
             Color.backgroundScreen
                 .ignoresSafeArea()
+            ZStack {
                 productListTable
-                    .disabled(products.isEmpty)
-                    .opacity(products.isEmpty ? 0 : 1)
+                    .disabled(viewModel.products.isEmpty)
+                    .opacity(viewModel.products.isEmpty ? 0 : 1)
+                
                 VStack {
                     EmptyProductListView()
                         .padding(.top, 40)
                         .padding(.horizontal)
                     Spacer()
                 }
-                .opacity(products.isEmpty ? 1 : 0)
-            
-            BaseButton(title: "Добавить товар") {
-                addProductButtonWasTapped()
+                .opacity(viewModel.products.isEmpty ? 1 : 0)
             }
-            .padding(.horizontal)
-            .padding(.bottom, 20)
+            .safeAreaInset(edge: .bottom, spacing: 60) {
+                BaseButton(title: "Добавить товар") {
+                    addProductButtonWasTapped()
+                }
+                .padding(.horizontal)
+                .padding(.bottom, 20)
+            }
         }
-        .searchable(text: $searchedProductName, placement: .navigationBarDrawer(displayMode: .always))
+        .searchable(text: $viewModel.searchedProductName, placement: .navigationBarDrawer(displayMode: .always))
         .onAppear {
             UISearchBar.appearance().tintColor = .uniTurquoise
         }
@@ -58,8 +65,8 @@ struct ProductListView: View {
     
     private var productListTable: some View {
         List {
-            let id = products.first?.id
-            ForEach(products, id: \.id) { product in
+            let id = viewModel.products.first?.id
+            ForEach(viewModel.products, id: \.id) { product in
                 ProductCellView(product: product)
                     .listRowBackground(Color.clear)
                     .listRowSeparatorTint(.strokePanel)
@@ -72,16 +79,12 @@ struct ProductListView: View {
                         createEditProductButton(product: product)
                     }
             }
-            Spacer(minLength: 100)
-                .safeAreaPadding(.bottom)
-                .listRowBackground(Color.clear)
-                .listRowSeparatorTint(.clear)
         }
         .listStyle(.plain)
     }
     
     private var backButtonTitle: some View {
-        Text(listName)
+        Text(viewModel.listName)
             .font(backButtonTitleFont)
     }
     
@@ -136,20 +139,24 @@ struct ProductListView: View {
     }
     
     private func deleteProductButtonWasPressed(product: Product) {
-        print("Selected to delete product: \(product.name)")
+        viewModel.deleteProduct(product)
     }
     
     private func editProductButtonWasPressed(product: Product) {
-        print("Selected to edit product: \(product.name)")
+        viewModel.editProduct(product)
     }
 }
 
 #Preview {
     @Previewable @State var isProductListPresented: Bool = true
-    @Previewable @State var products: [Product] = [Product.mock1,
-                                                   Product.mock2,
-                                                   Product.mock3]
-//    @Previewable @State var products: [Product] = []
+    
+    let products: [Product] = [Product.mock1,
+                               Product.mock2,
+                               Product.mock3]
+    
+//    let products: [Product] = []
+    
+    let viewModel = ProductListViewModelMock(listName: "Новый год", products: products)
     
     NavigationStack {
         VStack(spacing: 80) {
@@ -160,7 +167,7 @@ struct ProductListView: View {
         }
         .padding()
             .navigationDestination(isPresented: $isProductListPresented) {
-                ProductListView(listName: "Новый год", products: products)
+                ProductListView(listName: "Новый год", viewModel: viewModel)
             }
     }
 }
