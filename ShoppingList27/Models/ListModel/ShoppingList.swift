@@ -6,28 +6,30 @@
 //
 
 import SwiftUI
- 
-struct ShoppingList: Identifiable {
-    // удалить, перевести List на title(он уникальный)
-    let id: UUID
-    var title: String      // ✅
-    var circleColor: Color // ✅
-    var circleIcon: String // ✅
-    var currentCount: Int  // Общее кол-во Product, отмеченных как купленные
-    var totalCount: Int    // Общее кол-во добавленных Product
+import SwiftData
+
+@Model
+final class ShoppingList {
+    @Attribute(.unique) var title: String
+    var circleIcon: String
+    var circleColorValue: ColorComponents
+    
+    // стоит ли делать опциональным ? Или пустой массив норм
+    @Relationship(deleteRule: .cascade)
+    var productList: [Product] = []
+    
+    // computed property
+    var circleColor: Color { circleColorValue.color }
+    var currentCount: Int { productList.count(where: { $0.isBought}) }
+    var totalCount: Int { productList.count }
     
     init(
         title: String,
         circleColor: Color,
         circleIcon: String,
-        currentCount: Int,
-        totalCount: Int
     ) {
-        self.id = UUID()
         self.title = title
-        self.circleColor = circleColor
+        self.circleColorValue = ColorComponents(color: circleColor)
         self.circleIcon = circleIcon
-        self.currentCount = currentCount
-        self.totalCount = totalCount
     }
 }
