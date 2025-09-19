@@ -6,25 +6,30 @@
 //
 
 import SwiftUI
-// TODO: Думаю стоит повыносить моки в отедльный файл в той же папке
-
-// Для выбора ед. изм. в дальнейшем
-enum UnitOfMeasure: String, CaseIterable, Identifiable {
-    case kilogram = "кг."
-    case gram = "г."
-    case liter = "л."
-    case mlt = "мл."
-    case piece = "шт."
-    
-    // Может понадобиться при создании для отображения в ForEach понадобится ID
-    var id: String { rawValue }
-    
-    // Для вывода в текст
-    var shortName: String { rawValue }
-}
 
 @Observable
 final class Product: Identifiable {
+    enum UnitOfMeasure: String {
+        
+        /// Используем типичные значения для записи в БД, чтобы не было конфликтов при миграции
+        case kilogram = "kg"
+        case gram = "g"
+        case liter = "l"
+        case milliliter = "ml"
+        case piece = "pcs"
+        
+        /// Управляем отображением для UI через computed property
+        var shortName: String {
+            switch self {
+            case .kilogram: return "кг."
+            case .gram: return "г."
+            case .liter: return "л."
+            case .milliliter: return "мл."
+            case .piece: return "шт."
+            }
+        }
+    }
+    
     var id: UUID = UUID()
     var name: String                // ✅
     var count: Int                  // ✅ Кол-во выбранное для покупки
