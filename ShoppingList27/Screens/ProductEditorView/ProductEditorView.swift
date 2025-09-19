@@ -7,13 +7,23 @@
 
 import SwiftUI
 
+// MARK: - ProductEditorView
 struct ProductEditorView: View {
     
+    // MARK: - Private Properties
+    
     @Environment(\.dismiss) private var dismiss
+    private let saveAction: (String, Int, UnitOfMeasure) -> Void
+    private let pageTitle: String
+    private let registeredNames: [String]
+    
+    // MARK: - Private Properties - State
+    
     @State private var productName: String = ""
     @State private var count: Int?
     @State private var unit: UnitOfMeasure = .piece
-    private let saveAction: (String, Int, UnitOfMeasure) -> Void
+    
+    // MARK: - Private Properties - Computed
     
     private var isSaveEnabled: Bool {
         !productName.isEmpty
@@ -26,8 +36,7 @@ struct ProductEditorView: View {
         registeredNames.contains(productName)
     }
     
-    private let pageTitle: String
-    private let registeredNames: [String]
+    // MARK: - Body
     
     var body: some View {
         ZStack {
@@ -36,6 +45,8 @@ struct ProductEditorView: View {
             content
         }
     }
+    
+    // MARK: - Subviews
     
     private var content: some View {
         VStack(spacing: 12) {
@@ -73,10 +84,6 @@ struct ProductEditorView: View {
                       format: .number,
                       placeholder: "Количество",
                       keyboardType: .numberPad)
-    }
-    
-    private var unitTextField: some View {
-        EmptyView()
     }
     
     private var topBar: some View {
@@ -142,6 +149,8 @@ struct ProductEditorView: View {
     }
     
 }
+
+// MARK: - Previews
 
 #Preview("Create New Product") {
     @Previewable @State var isShown: Bool = false
