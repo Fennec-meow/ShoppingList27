@@ -47,11 +47,7 @@ final class Product: Identifiable {
         self.unitMeasure = unitMeasure
         self.isBought = isBought
     }
-    
-    @MainActor static let mock1 = Product(name: "Чайник", count: 12, unitMeasure: .piece, isBought: true)
-    @MainActor static let mock2 = Product(name: "Вода", count: 4, unitMeasure: .liter, isBought: false)
-    @MainActor static let mock3 = Product(name: "Макароны", count: 2, unitMeasure: .kilogram, isBought: true)
-    
+        
     /// Для переключения чекбокса
     /// - Передаем параметр isBougth если явно хотим указать значение для этой переменной
     /// - Параметр можно не передавать если мы хотим просто переключить значение на противоположное
