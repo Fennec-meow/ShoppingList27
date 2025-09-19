@@ -36,15 +36,19 @@ final class Product {
     var unitMeasure: UnitOfMeasure
     var isBought: Bool
     
+    @Relationship var shoppingList: ShoppingList
+    
     init(
         name: String,
         count: Int,
         unitMeasure: UnitOfMeasure,
-        isBought: Bool = false
+        isBought: Bool = false,
+        list: ShoppingList
     ) {
         self.name = name
         self.count = count
         self.unitMeasure = unitMeasure
         self.isBought = isBought
+        self.shoppingList = list
     }
 }

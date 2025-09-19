@@ -14,11 +14,9 @@ final class ShoppingList {
     var circleIcon: String
     var circleColorValue: ColorComponents
     
-    // стоит ли делать опциональным ? Или пустой массив норм
-    @Relationship(deleteRule: .cascade)
+    @Relationship(deleteRule: .cascade, inverse: \Product.shoppingList)
     var productList: [Product] = []
     
-    // computed property
     var circleColor: Color { circleColorValue.color }
     var currentCount: Int { productList.count(where: { $0.isBought}) }
     var totalCount: Int { productList.count }
