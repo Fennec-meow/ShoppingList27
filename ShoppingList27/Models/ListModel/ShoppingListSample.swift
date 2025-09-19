@@ -12,22 +12,16 @@ struct ShoppingListSample {
             title: "Новый год",
             circleColor: .addBlue,
             circleIcon: "calendar",
-            currentCount: 10,
-            totalCount: 20
         ),
         ShoppingList(
             title: "Кошке",
             circleColor: .addGreen,
             circleIcon: "paw",
-            currentCount: 1,
-            totalCount: 4
         ),
         ShoppingList(
             title: "Вечеринка малого",
             circleColor: .addYellow,
             circleIcon: "gameController",
-            currentCount: 9,
-            totalCount: 20
         )
     ]
 }

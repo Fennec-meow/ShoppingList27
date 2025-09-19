@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
-@Observable
-final class Product: Identifiable {
-    enum UnitOfMeasure: String {
+@Model
+final class Product {
+    enum UnitOfMeasure: String, Codable {
         
         /// Используем типичные значения для записи в БД, чтобы не было конфликтов при миграции
         case kilogram = "kg"
@@ -30,11 +31,10 @@ final class Product: Identifiable {
         }
     }
     
-    var id: UUID = UUID()
-    var name: String                // ✅
-    var count: Int                  // ✅ Кол-во выбранное для покупки
-    var unitMeasure: UnitOfMeasure  // ✅ Единицы измерения выбранные при записи 
-    private(set) var isBought: Bool // ✅
+    var name: String
+    var count: Int
+    var unitMeasure: UnitOfMeasure
+    var isBought: Bool
     
     init(
         name: String,
@@ -46,16 +46,5 @@ final class Product: Identifiable {
         self.count = count
         self.unitMeasure = unitMeasure
         self.isBought = isBought
-    }
-        
-    /// Для переключения чекбокса
-    /// - Передаем параметр isBougth если явно хотим указать значение для этой переменной
-    /// - Параметр можно не передавать если мы хотим просто переключить значение на противоположное
-    func toggleBought(isBougth: Bool? = nil) {
-        if let isBougth = isBougth {
-            self.isBought = isBougth
-        } else {
-            self.isBought.toggle()
-        }
     }
 }

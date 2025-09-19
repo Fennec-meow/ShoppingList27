@@ -12,7 +12,7 @@ struct ProductCellView: View {
     
     var body: some View {
         HStack {
-            Button("", action: { product.toggleBought() })
+            Button("", action: { product.isBought.toggle() })
                 .buttonStyle(.checkbox(isChecked: product.isBought))
             
             Group {
