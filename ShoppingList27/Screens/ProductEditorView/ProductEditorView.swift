@@ -16,10 +16,18 @@ struct ProductEditorView: View {
     private let saveAction: (String, Int, UnitOfMeasure) -> Void
     
     private var isSaveEnabled: Bool {
-        !productName.isEmpty && count != nil && count != 0
+        !productName.isEmpty
+        && count != nil
+        && count != 0
+        && !isProductNameDuplicated
+    }
+    
+    private var isProductNameDuplicated: Bool {
+        registeredNames.contains(productName)
     }
     
     private let pageTitle: String
+    private let registeredNames: [String]
     
     var body: some View {
         ZStack {
@@ -55,6 +63,7 @@ struct ProductEditorView: View {
         BaseTextField("Product Name",
                       text: $productName,
                       placeholder: "Название товара",
+                      errorText: isProductNameDuplicated ? "Это название уже используется, пожалуйста, измените его." : nil,
                       keyboardType: .default)
     }
     
@@ -118,15 +127,17 @@ struct ProductEditorView: View {
             .clipShape(RoundedRectangle(cornerRadius: 2.5))
     }
     
-    init(product: Product?, onSave: @escaping (String, Int, UnitOfMeasure) -> Void) {
+    init(product: Product?, registeredNames: [String] = [], onSave: @escaping (String, Int, UnitOfMeasure) -> Void) {
         saveAction = onSave
         if let product {
             productName = product.name
             count = product.count
             unit = product.unitMeasure
             pageTitle = "Редактировать"
+            self.registeredNames = registeredNames.filter { $0 != product.name }
         } else {
             pageTitle = "Создание товара"
+            self.registeredNames = registeredNames
         }
     }
     
@@ -138,7 +149,8 @@ struct ProductEditorView: View {
         isShown = true
     }
     .sheet(isPresented: $isShown) {
-        ProductEditorView(product: nil) { name, count, unit in
+        ProductEditorView(product: nil,
+                          registeredNames: ["Текст", "Ошибка"]) { name, count, unit in
             let newProduct = Product(name: name,
                                      count: count,
                                      unitMeasure: unit,
@@ -157,11 +169,12 @@ struct ProductEditorView: View {
         isShown = true
     }
     .sheet(isPresented: $isShown) {
-        ProductEditorView(product: product, onSave: { name, count, unit in
+        ProductEditorView(product: product,
+                          registeredNames: ["Текст", "Ошибка", "Чайник"]) { name, count, unit in
             product.name = name
             product.count = count
             product.unitMeasure = unit
             print("Save \(product)")
-        })
+        }
     }
 }
