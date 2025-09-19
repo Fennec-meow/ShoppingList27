@@ -6,11 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 // MARK: - ListsMainView
 struct ListsMainView: View {
-    //TODO: Тут будет quary массив моделей списков
-    
+    @Query private var lists: [ShoppingList]
     // MARK: - Private Properties
     
     @ObservedObject private var viewModel: ListsMainViewModel
@@ -57,7 +57,7 @@ struct ListsMainView: View {
     
     private var listsScrollView: some View {
         List {
-            ForEach(viewModel.lists) { list in
+            ForEach(lists) { list in
                 ListItemView(item: list)
             }
             .listRowSeparator(.hidden)
@@ -80,6 +80,9 @@ struct ListsMainView: View {
         })
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
+        .sheet(isPresented: $isCreatingNewList) {
+            ListEditorView(isEditing: false)
+        }
     }
     
     private var titleView: some View {

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// Экран для создания новых списков и создания новых
 struct ListEditorView: View {
@@ -15,6 +16,8 @@ struct ListEditorView: View {
     @State private var text: String = ""
     @State private var selectedColor: Color?
     @State private var selectedIcon: String?
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     
     private var buttonTitle: String {
         isEditing ? "Сохранить" : "Создать"
@@ -42,7 +45,14 @@ struct ListEditorView: View {
             Spacer()
             
             BaseButton(isActive: isButtonEnabled, title: buttonTitle) {
-                // Метод сохранения списка в БД
+                guard let selectedColor, let selectedIcon else { return }
+                let newList = ShoppingList(
+                    title: text,
+                    circleColor: selectedColor,
+                    circleIcon: selectedIcon
+                )
+                modelContext.insert(newList)
+                dismiss()
             }
             .padding(.bottom, 20)
         }
