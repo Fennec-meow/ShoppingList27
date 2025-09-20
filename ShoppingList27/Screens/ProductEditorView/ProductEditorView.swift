@@ -78,7 +78,7 @@ struct ProductEditorView: View {
         BaseTextField("Product Name",
                       text: $productName,
                       placeholder: "Название товара",
-                      errorText: isProductNameDuplicated ? "Это название уже используется, пожалуйста, измените его." : nil,
+                      errorText: isProductNameDuplicated ? "Этот товар уже есть в списке, добавьте другой" : nil,
                       keyboardType: .default)
     }
     
