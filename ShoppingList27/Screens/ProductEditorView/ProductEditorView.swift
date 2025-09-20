@@ -26,10 +26,14 @@ struct ProductEditorView: View {
     // MARK: - Private Properties - Computed
     
     private var isSaveEnabled: Bool {
-        !productName.isEmpty
-        && count != nil
-        && count != 0
-        && !isProductNameDuplicated
+        if let count,
+           count > 0,
+           !productName.isEmpty,
+           !isProductNameDuplicated {
+            true
+        } else {
+            false
+        }
     }
     
     private var isProductNameDuplicated: Bool {
