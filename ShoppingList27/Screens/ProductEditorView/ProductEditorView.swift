@@ -113,7 +113,7 @@ struct ProductEditorView: View {
             dismiss()
         } label: {
             Text("Отменить")
-                .font(.Headline.semiBold)
+                .font(.Body.regular)
         }
         .tint(.uniTurquoise)
     }
@@ -126,7 +126,7 @@ struct ProductEditorView: View {
             dismiss()
         } label: {
             Text("Готово")
-                .font(isSaveEnabled ? .Headline.semiBold : .Headline.semiBold)
+                .font(.Headline.semiBold)
         }
         .tint(isSaveEnabled ? .uniTurquoise : .hint)
         .disabled(!isSaveEnabled)
