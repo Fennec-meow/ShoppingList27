@@ -15,22 +15,22 @@ struct ListsMainView: View {
     @ObservedObject private var viewModel: ListsMainViewModel
     @State private var isCreatingNewList: Bool = false
     
+    @Environment(NavigationRoute.self) private var router
+    
     // MARK: - Body
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.backgroundScreen
-                    .ignoresSafeArea()
-                content
+        ZStack {
+            Color.backgroundScreen
+                .ignoresSafeArea()
+            content
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                titleView
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    titleView
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    settingsMenu
-                }
+            ToolbarItem(placement: .topBarTrailing) {
+                settingsMenu
             }
         }
     }
@@ -58,6 +58,9 @@ struct ListsMainView: View {
         List {
             ForEach(viewModel.lists) { list in
                 ListItemView(item: list)
+                    .onTapGesture {
+                        router.handleNavigateTo(.productList(listItem: list))
+                    }
             }
             .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets())
@@ -76,6 +79,7 @@ struct ListsMainView: View {
                    action: {
             print("CreatingNewList")
             isCreatingNewList = true
+            router.handleNavigateTo(.listEditor(isEditing: false, listItem: nil))
         })
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
@@ -115,6 +119,7 @@ private extension ListsMainView {
 
 // MARK: - Preview - Data
 #Preview("Data") {
+    let router = NavigationRoute()
     let viewModel = ListsMainViewModel()
     viewModel.insert(list: .mock)
     viewModel.insert(list: .mock2)
@@ -126,10 +131,5 @@ private extension ListsMainView {
     viewModel.insert(list: .mock2)
     viewModel.insert(list: .mock3)
     return ListsMainView(viewModel: viewModel)
-}
-
-// MARK: - Preview - Empty
-#Preview("Empty") {
-    let viewModel = ListsMainViewModel()
-    return ListsMainView(viewModel: viewModel)
+        .environment(router)
 }
