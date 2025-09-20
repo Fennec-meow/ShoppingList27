@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ListItem: Identifiable {
+struct ListItem: Identifiable, Equatable, Hashable {
     let id: UUID
     var title: String
     var circleColor: Color
