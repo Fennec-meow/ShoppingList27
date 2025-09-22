@@ -11,10 +11,13 @@ import SwiftUI
 struct ListEditorView: View {
     /// Флаг, определяющий режим работы экрана: true — редактирование, false — создание нового списка.
     let isEditing: Bool
+    let listItem: ListItem?
     
     @State private var text: String = ""
     @State private var selectedColor: Color?
     @State private var selectedIcon: String?
+    
+    @Environment(NavigationRoute.self) private var router
     
     private var buttonTitle: String {
         isEditing ? "Сохранить" : "Создать"
@@ -43,14 +46,38 @@ struct ListEditorView: View {
             
             BaseButton(isActive: isButtonEnabled, title: buttonTitle) {
                 // Метод сохранения списка в БД
+                router.pop()
             }
             .padding(.bottom, 20)
         }
         .padding(.horizontal, 16)
         .background(Color.backgroundScreen)
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                backButton
+            }
+        }
     }
-}
+        
+        private var backButton: some View {
+            Button {
+                router.pop()
+            } label: {
+                HStack(spacing: 8) {
+                    Image(systemName: "chevron.backward")
+                    Text(isEditing ? "Редактировать список" : "Создать список")
+                        .font(Font.Headline.medium)
+                }
+            }
+            .tint(.grey80)
+        }
+    }
 
 #Preview {
-    ListEditorView(isEditing: false)
+    NavigationStack {
+        ListEditorView(isEditing: false, listItem: nil)
+            .environment(NavigationRoute())
+    }
 }
