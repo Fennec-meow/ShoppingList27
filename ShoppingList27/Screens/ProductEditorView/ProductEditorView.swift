@@ -22,6 +22,16 @@ struct ProductEditorView: View {
     @State private var productName: String = ""
     @State private var count: Int?
     @State private var unit: UnitOfMeasure = .piece
+
+    // MARK: - Body
+    
+    var body: some View {
+        ZStack {
+            Color.backgroundScreen
+                .ignoresSafeArea()
+            content
+        }
+    }
     
     // MARK: - Private Properties - Computed
     
@@ -38,16 +48,6 @@ struct ProductEditorView: View {
     
     private var isProductNameDuplicated: Bool {
         registeredNames.contains(productName)
-    }
-    
-    // MARK: - Body
-    
-    var body: some View {
-        ZStack {
-            Color.backgroundScreen
-                .ignoresSafeArea()
-            content
-        }
     }
     
     // MARK: - Subviews
