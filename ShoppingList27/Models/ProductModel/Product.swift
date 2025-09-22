@@ -52,6 +52,6 @@ extension Product {
             case .piece: return "шт."
             }
         }
-        var id: String { rawValue }
+        var id: Self { self }
     }
 }
