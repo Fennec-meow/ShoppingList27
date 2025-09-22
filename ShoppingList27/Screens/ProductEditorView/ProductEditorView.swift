@@ -26,11 +26,14 @@ struct ProductEditorView: View {
     // MARK: - Body
     
     var body: some View {
-        ZStack {
-            Color.backgroundScreen
-                .ignoresSafeArea()
-            content
+        VStack(spacing: 12) {
+            dragIndicator
+            topBar
+            propertiesSetterView
+            Spacer()
         }
+        .padding(.top, 4)
+        .background(.backgroundScreen)
     }
     
     // MARK: - Private Properties - Computed
@@ -48,18 +51,6 @@ struct ProductEditorView: View {
     
     private var isProductNameDuplicated: Bool {
         registeredNames.contains(productName)
-    }
-    
-    // MARK: - Subviews
-    
-    private var content: some View {
-        VStack(spacing: 12) {
-            dragIndicator
-            topBar
-            propertiesSetterView
-            Spacer()
-        }
-        .padding(.top, 4)
     }
     
     private var propertiesSetterView: some View {
