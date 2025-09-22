@@ -12,6 +12,7 @@ struct ProductListView: View {
     @State var viewModel: ProductListViewModelProtocol
     
     @Environment(\.dismiss) private var dismiss
+    @Environment(NavigationRoute.self) private var router
     
     private let backButtonTitleFont: Font = Font.Headline.medium
     
@@ -52,6 +53,7 @@ struct ProductListView: View {
             .safeAreaInset(edge: .bottom, spacing: 60) {
                 BaseButton(title: "Добавить товар") {
                     addProductButtonWasTapped()
+                    router.showSheet(.createProduct)
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 20)
@@ -90,7 +92,7 @@ struct ProductListView: View {
     
     private var backButton: some View {
         Button {
-            dismiss()
+            router.pop()
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "chevron.backward")
@@ -157,6 +159,7 @@ struct ProductListView: View {
 //    let products: [Product] = []
     
     let viewModel = ProductListViewModelMock(listName: "Новый год", products: products)
+    let router = NavigationRoute()
     
     NavigationStack {
         VStack(spacing: 80) {
@@ -168,6 +171,8 @@ struct ProductListView: View {
         .padding()
             .navigationDestination(isPresented: $isProductListPresented) {
                 ProductListView(listName: "Новый год", viewModel: viewModel)
+                    .environment(router)
             }
     }
+    .environment(router)
 }
