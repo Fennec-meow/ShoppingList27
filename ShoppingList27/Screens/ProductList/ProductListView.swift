@@ -53,7 +53,7 @@ struct ProductListView: View {
             .safeAreaInset(edge: .bottom, spacing: 60) {
                 BaseButton(title: "Добавить товар") {
                     addProductButtonWasTapped()
-                    router.push(.createProduct)
+                    router.showSheet(.createProduct)
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 20)

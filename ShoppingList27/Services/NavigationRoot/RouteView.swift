@@ -54,13 +54,13 @@ struct RouteView: View {
         case .productList(let listItem):
                 ProductListView(listName: listItem.title)
         case .createProduct:
-                /// Временная заглушка
-                VStack {
-                    Text("Экран создания товара")
-                        .font(Font.LargeTitle.regular)
-                    Text("В разработке...")
-                        .foregroundColor(.gray)
-                }
+                ProductEditorView(
+                    product: nil,
+                    registeredNames: [],
+                    onSave: { _, _, _ in
+                        // метод для сохранения в SwiftData
+                    }
+                )
         }
     }
 }
