@@ -17,7 +17,11 @@ final class ShoppingList {
     @Relationship(deleteRule: .cascade, inverse: \Product.shoppingList)
     var productList: [Product] = []
     
-    var circleColor: Color { circleColorValue.color }
+    var circleColor: Color {
+        get { circleColorValue.color }
+        set { circleColorValue = ColorComponents(color: newValue) }
+    }
+    
     var currentCount: Int { productList.count(where: { $0.isBought}) }
     var totalCount: Int { productList.count }
     
