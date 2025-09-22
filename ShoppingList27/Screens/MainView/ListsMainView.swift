@@ -14,6 +14,7 @@ struct ListsMainView: View {
     
     @ObservedObject private var viewModel: ListsMainViewModel
     @State private var isCreatingNewList: Bool = false
+    @AppStorage("ThemeType") private var selectedThemeType: ThemeType = .system
     
     // MARK: - Body
     
@@ -88,18 +89,31 @@ struct ListsMainView: View {
     }
     
     private var settingsMenu: some View {
-        Menu("SettingsMenu",
-             systemImage: ImageTitles.settingsMenu,
-             content: { })
+        Menu {
+            Picker(
+                selection: $selectedThemeType,
+                label: Label("Установить тему", systemImage: ImageTitles.theme)
+            ) {
+                Text("Светлая").tag(ThemeType.light)
+                Text("Темная").tag(ThemeType.dark)
+                Text("Системная").tag(ThemeType.system)
+            }
+            .pickerStyle(.menu)
+        } label: {
+            Image(systemName: ImageTitles.settingsMenu)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24, height: 24)
+                .foregroundStyle(Color.grey80)
+        }
         .tint(Color.grey80)
     }
-    
+
     // MARK: - Initializer
-    
     init(viewModel: ListsMainViewModel) {
         self.viewModel = viewModel
     }
-    
+
 }
 
 // MARK: - Extension - Constants
@@ -110,6 +124,8 @@ private extension ListsMainView {
     }
     enum ImageTitles {
         static let settingsMenu = "ellipsis.circle"
+        static let checkmark = "checkmark"
+        static let theme = "circle.righthalf.filled"
     }
 }
 
