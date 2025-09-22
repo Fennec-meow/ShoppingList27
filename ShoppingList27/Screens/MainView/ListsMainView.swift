@@ -40,7 +40,7 @@ struct ListsMainView: View {
     
     @ViewBuilder
     private var content: some View {
-        if viewModel.shouldDisplayPlaceholder {
+        if lists.isEmpty {
             EmptyListPlaceholderView()
                 .padding(.horizontal, 16)
                 .frame(maxHeight: .infinity)
