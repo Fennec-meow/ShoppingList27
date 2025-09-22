@@ -16,7 +16,7 @@ enum UnitOfMeasure: String, CaseIterable, Identifiable {
     case piece = "шт."
     
     // Может понадобиться при создании для отображения в ForEach понадобится ID
-    var id: String { rawValue }
+    var id: Self { self }
     
     // Для вывода в текст
     var shortName: String { rawValue }
