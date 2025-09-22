@@ -73,7 +73,7 @@ struct BaseTextField: View {
         placeholder: String,
         hasError: Bool,
         errorText: String?,
-        keyboardType: UIKeyboardType = .numberPad
+        keyboardType: UIKeyboardType = .default
     ) {
         self.titleKey = placeholder
         self._text = text
@@ -91,7 +91,7 @@ struct BaseTextField: View {
         text: Binding<String>,
         placeholder: String,
         errorText: String? = nil,
-        keyboardType: UIKeyboardType = .numberPad
+        keyboardType: UIKeyboardType = .default
     ) {
         self.titleKey = titleKey
         self._text = text
