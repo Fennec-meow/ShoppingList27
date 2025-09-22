@@ -113,6 +113,12 @@ private extension ListsMainView {
     }
 }
 
+// MARK: - Theme Types
+// TODO: - Я думаю уже пора переносить enums куда-то в одно место
+enum ThemeType: String, CaseIterable {
+    case system, dark, light
+}
+
 // MARK: - Preview - Data
 #Preview("Data") {
     let viewModel = ListsMainViewModel()
