@@ -12,7 +12,6 @@ struct ShoppingList27App: App {
     @AppStorage("hasCompleteOnboarding") private var hasCompleteOnboarding = false
     @AppStorage("ThemeType") private var selectedThemeType: ThemeType = .system
     @StateObject private var listsMainVM = ListsMainViewModel()
-    @Environment(\.colorScheme) private var systemColorScheme
     
     var body: some Scene {
         WindowGroup {
@@ -23,11 +22,16 @@ struct ShoppingList27App: App {
                     WelcomeScreenView(hasCompletedOnboarding: $hasCompleteOnboarding)
                 }
             }
-            .environment(\.colorScheme,
-                  selectedThemeType == .system
-                  ? systemColorScheme
-                  : (selectedThemeType == .light ? .light : .dark)
+            .preferredColorScheme(
+                selectedThemeType == .system
+                ? nil
+                : (selectedThemeType == .light ? .light : .dark)
             )
         }
     }
+}
+
+// TODO: - Я думаю уже пора переносить enums куда-то в одно место
+enum ThemeType: String, CaseIterable {
+    case system, dark, light
 }
