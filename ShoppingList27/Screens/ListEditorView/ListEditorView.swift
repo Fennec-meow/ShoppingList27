@@ -46,7 +46,7 @@ struct ListEditorView: View {
             
             BaseButton(isActive: isButtonEnabled, title: buttonTitle) {
                 // Метод сохранения списка в БД
-                router.handleGoBack()
+                router.pop()
             }
             .padding(.bottom, 20)
         }

@@ -59,7 +59,7 @@ struct ListsMainView: View {
             ForEach(viewModel.lists) { list in
                 ListItemView(item: list)
                     .onTapGesture {
-                        router.handleNavigateTo(.productList(listItem: list))
+                        router.push(.productList(listItem: list))
                     }
             }
             .listRowSeparator(.hidden)
@@ -79,7 +79,7 @@ struct ListsMainView: View {
                    action: {
             print("CreatingNewList")
             isCreatingNewList = true
-            router.handleNavigateTo(.listEditor(isEditing: false, listItem: nil))
+            router.push(.listEditor(isEditing: false, listItem: nil))
         })
         .padding(.horizontal, 16)
         .padding(.bottom, 20)

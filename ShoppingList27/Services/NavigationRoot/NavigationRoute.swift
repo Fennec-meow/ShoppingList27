@@ -40,36 +40,36 @@ final class NavigationRoute {
     var isPresented: Route?
     
     /// Обработка навигации
-    func handleNavigateTo(_ route: Route) {
+    func push(_ route: Route) {
         navigationPath.append(route)
     }
     /// Обработка возврата назад
-    func handleGoBack() {
+    func pop() {
         guard !navigationPath.isEmpty else { return }
         navigationPath.removeLast()
     }
     /// Обработка перехода к корневому экрану
-    func handleGoToRoot() {
+    func popToRoot() {
         guard !navigationPath.isEmpty else { return }
         navigationPath = []
     }
     /// Обработка замены текущего экрана
-    func handleReplaceCurrent(with route: Route) {
+    func replaceCurrent(with route: Route) {
         guard !navigationPath.isEmpty else { return }
         navigationPath.removeLast()
         navigationPath.append(route)
     }
     
     /// Обработка показа модального окна
-    func handlePresentSheet(_ route: Route) {
+    func showSheet(_ route: Route) {
         presentingSheet = route
     }
     /// Обработка показа полноэкранного окна
-    func handlePresentFullScreen(_ route: Route) {
+    func showFullScreen(_ route: Route) {
         presentingFullScreen = route
     }
     /// Обработка закрытия всех модальных окон
-    func handleDismissAllModals() {
+    func dismissAllModals() {
         presentingSheet = nil
         presentingFullScreen = nil
         presentingModal = nil

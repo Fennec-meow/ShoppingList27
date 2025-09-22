@@ -53,7 +53,7 @@ struct ProductListView: View {
             .safeAreaInset(edge: .bottom, spacing: 60) {
                 BaseButton(title: "Добавить товар") {
                     addProductButtonWasTapped()
-                    router.handleNavigateTo(.createProduct)
+                    router.push(.createProduct)
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 20)
@@ -92,7 +92,7 @@ struct ProductListView: View {
     
     private var backButton: some View {
         Button {
-            router.handleGoBack()
+            router.pop()
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "chevron.backward")

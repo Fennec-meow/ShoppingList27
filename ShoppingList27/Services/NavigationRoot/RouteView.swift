@@ -37,7 +37,7 @@ struct RouteView: View {
         .onChange(of: hasCompletedOnboarding) { _, newValue in
             if newValue && router.root == .welcome {
                 router.root = .listMain
-                router.handleGoToRoot()
+                router.popToRoot()
             }
         }
     }
