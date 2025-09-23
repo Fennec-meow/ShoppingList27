@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UnitsPickerView: View {
     
-    @Binding private var selectedUnit: UnitOfMeasure
+    @Binding private var selectedUnit: Product.UnitOfMeasure
     
     var body: some View {
         HStack {
@@ -32,7 +32,7 @@ struct UnitsPickerView: View {
     
     private var pickerView: some View {
         Picker("Unit Picker", selection: $selectedUnit) {
-            ForEach(UnitOfMeasure.allCases) { unit in
+            ForEach(Product.UnitOfMeasure.allCases) { unit in
                 Text(unit.shortName)
             }
         }
@@ -40,13 +40,13 @@ struct UnitsPickerView: View {
         .tint(.uniTurquoise)
     }
     
-    init(unit: Binding<UnitOfMeasure>) {
+    init(unit: Binding<Product.UnitOfMeasure>) {
         self._selectedUnit = unit
     }
 }
 
 #Preview {
-    @Previewable @State var unit: UnitOfMeasure = .piece
+    @Previewable @State var unit: Product.UnitOfMeasure = .piece
     Color.backgroundScreen
         .ignoresSafeArea()
         .overlay {

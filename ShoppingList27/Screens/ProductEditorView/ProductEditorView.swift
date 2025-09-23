@@ -14,7 +14,7 @@ struct ProductEditorView: View {
     
     @Environment(NavigationRoute.self) private var router
     @Environment(\.dismiss) private var dismiss
-    private let saveAction: (String, Int, UnitOfMeasure) -> Void
+    private let saveAction: (String, Int, Product.UnitOfMeasure) -> Void
     private let pageTitle: String
     private let registeredNames: [String]
     
@@ -22,8 +22,8 @@ struct ProductEditorView: View {
     
     @State private var productName: String = ""
     @State private var count: Int?
-    @State private var unit: UnitOfMeasure = .piece
-
+    @State private var unit: Product.UnitOfMeasure = .piece
+    
     // MARK: - Body
     
     var body: some View {
@@ -130,7 +130,7 @@ struct ProductEditorView: View {
             .clipShape(RoundedRectangle(cornerRadius: 2.5))
     }
     
-    init(product: Product?, registeredNames: [String] = [], onSave: @escaping (String, Int, UnitOfMeasure) -> Void) {
+    init(product: Product?, registeredNames: [String] = [], onSave: @escaping (String, Int, Product.UnitOfMeasure) -> Void) {
         saveAction = onSave
         if let product {
             productName = product.name
@@ -150,6 +150,7 @@ struct ProductEditorView: View {
 
 #Preview("Create New Product") {
     @Previewable @State var isShown: Bool = false
+    let list = ShoppingList(title: "List", circleColor: .addBlue, circleIcon: Icons.alert.rawValue)
     Button("Show modal view") {
         isShown = true
     }
@@ -159,7 +160,8 @@ struct ProductEditorView: View {
             let newProduct = Product(name: name,
                                      count: count,
                                      unitMeasure: unit,
-                                     isBought: false)
+                                     isBought: false,
+                                     list: list)
             print("Save \(newProduct)")
         }
     }
@@ -168,7 +170,9 @@ struct ProductEditorView: View {
 #Preview("Edit Product") {
     @Previewable @State var product = Product(name: "Чайник",
                                               count: 1,
-                                              unitMeasure: .piece)
+                                              unitMeasure: .piece,
+                                              list: ShoppingList(title: "List", circleColor: .addBlue, circleIcon: Icons.alert.rawValue))
+    
     @Previewable @State var isShown: Bool = false
     Button("Show modal view") {
         isShown = true

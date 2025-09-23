@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 // MARK: - ListsMainView
 struct ListsMainView: View {
-    
+    @Query private var lists: [ShoppingList]
     // MARK: - Private Properties
     
     @ObservedObject private var viewModel: ListsMainViewModel
@@ -39,7 +40,7 @@ struct ListsMainView: View {
     
     @ViewBuilder
     private var content: some View {
-        if viewModel.shouldDisplayPlaceholder {
+        if lists.isEmpty {
             EmptyListPlaceholderView()
                 .padding(.horizontal, 16)
                 .frame(maxHeight: .infinity)
@@ -56,10 +57,10 @@ struct ListsMainView: View {
     
     private var listsScrollView: some View {
         List {
-            ForEach(viewModel.lists) { list in
+            ForEach(lists) { list in
                 ListItemView(item: list)
                     .onTapGesture {
-                        router.push(.productList(listItem: list))
+                        router.push(.productList(list: list))
                     }
             }
             .listRowSeparator(.hidden)
@@ -79,7 +80,7 @@ struct ListsMainView: View {
                    action: {
             print("CreatingNewList")
             isCreatingNewList = true
-            router.push(.listEditor(isEditing: false, listItem: nil))
+            router.push(.listEditor(isEditing: false))
         })
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
@@ -121,15 +122,12 @@ private extension ListsMainView {
 #Preview("Data") {
     let router = NavigationRoute()
     let viewModel = ListsMainViewModel()
-    viewModel.insert(list: .mock)
-    viewModel.insert(list: .mock2)
-    viewModel.insert(list: .mock3)
-    viewModel.insert(list: .mock)
-    viewModel.insert(list: .mock2)
-    viewModel.insert(list: .mock3)
-    viewModel.insert(list: .mock)
-    viewModel.insert(list: .mock2)
-    viewModel.insert(list: .mock3)
-    return ListsMainView(viewModel: viewModel)
+    ListsMainView(viewModel: viewModel)
         .environment(router)
+}
+
+// MARK: - Preview - Empty
+#Preview("Empty") {
+    let viewModel = ListsMainViewModel()
+    ListsMainView(viewModel: viewModel)
 }

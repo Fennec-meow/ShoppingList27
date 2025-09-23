@@ -152,9 +152,7 @@ struct ProductListView: View {
 #Preview {
     @Previewable @State var isProductListPresented: Bool = true
     
-    let products: [Product] = [Product.mock1,
-                               Product.mock2,
-                               Product.mock3]
+    let products: [Product] = ProductSample.contents
     
 //    let products: [Product] = []
     
