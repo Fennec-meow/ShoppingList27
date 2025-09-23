@@ -89,20 +89,7 @@ struct ListEditorView: View {
     
     private var saveButton: some View {
         BaseButton(isActive: isButtonEnabled, title: buttonTitle) {
-            guard let selectedColor, let selectedIcon else { return }
-            if isEditing {
-                shoppingList?.title = text
-                shoppingList?.circleColor = selectedColor
-                shoppingList?.circleIcon = selectedIcon
-            } else {
-                let newList = ShoppingList(
-                    title: text,
-                    circleColor: selectedColor,
-                    circleIcon: selectedIcon
-                )
-                modelContext.insert(newList)
-            }
-            try? modelContext.save()
+            applyChanges()
             router.pop()
         }
     }
@@ -125,6 +112,31 @@ struct ListEditorView: View {
         }
     }
     
+    // MARK: - Private Methods
+    
+    func applyChanges() {
+        guard let selectedColor, let selectedIcon else { return }
+        if isEditing {
+            shoppingList?.title = text
+            shoppingList?.circleColor = selectedColor
+            shoppingList?.circleIcon = selectedIcon
+        } else {
+            let newList = ShoppingList(
+                title: text,
+                circleColor: selectedColor,
+                circleIcon: selectedIcon
+            )
+            modelContext.insert(newList)
+        }
+        do {
+            try modelContext.save()
+        } catch {
+            print("ListEditorView.applyChanges: save error \(error)")
+        }
+    }
+    
+    // MARK: - Initializer
+    
     init(shoppingList: ShoppingList? = nil, registeredTitles: [String]) {
         text = shoppingList?.title ?? ""
         selectedColor = shoppingList?.circleColor
@@ -136,6 +148,7 @@ struct ListEditorView: View {
     
 }
 
+// MARK: - Preview
 #Preview {
     NavigationStack {
         ListEditorView(shoppingList: nil, registeredTitles: ["123"])
