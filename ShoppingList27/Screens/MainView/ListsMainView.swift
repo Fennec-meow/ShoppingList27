@@ -93,7 +93,9 @@ struct ListsMainView: View {
         Menu {
             Picker(
                 selection: $selectedThemeType,
-                label: Label("Установить тему", systemImage: colorScheme == .dark ? ImageTitles.themeDark : ImageTitles.themeLight)
+                label: Label("Установить тему", systemImage: colorScheme == .dark
+                             ? ImageTitles.themeDark
+                             : ImageTitles.themeLight)
             ) {
                 Text("Светлая").tag(ThemeType.light)
                 Text("Темная").tag(ThemeType.dark)
@@ -105,7 +107,7 @@ struct ListsMainView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 24, height: 24)
-                .foregroundStyle(Color.grey80)
+                .foregroundStyle(Color.colorBlack)
         }
         .tint(Color.grey80)
     }
