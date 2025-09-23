@@ -60,7 +60,7 @@ struct ListsMainView: View {
             ForEach(lists) { list in
                 ListItemView(item: list)
                     .onTapGesture {
-                        router.push(.productList(listItem: list))
+                        router.push(.productList(list: list))
                     }
             }
             .listRowSeparator(.hidden)
@@ -80,13 +80,10 @@ struct ListsMainView: View {
                    action: {
             print("CreatingNewList")
             isCreatingNewList = true
-            router.push(.listEditor(isEditing: false, listItem: nil))
+            router.push(.listEditor(isEditing: false))
         })
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
-        .sheet(isPresented: $isCreatingNewList) {
-            ListEditorView(isEditing: false)
-        }
     }
     
     private var titleView: some View {
@@ -126,10 +123,11 @@ private extension ListsMainView {
     let router = NavigationRoute()
     let viewModel = ListsMainViewModel()
     ListsMainView(viewModel: viewModel)
+        .environment(router)
 }
 
 // MARK: - Preview - Empty
 #Preview("Empty") {
     let viewModel = ListsMainViewModel()
-    return ListsMainView(viewModel: viewModel)
+    ListsMainView(viewModel: viewModel)
 }

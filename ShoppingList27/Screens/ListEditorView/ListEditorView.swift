@@ -12,7 +12,7 @@ import SwiftData
 struct ListEditorView: View {
     /// Флаг, определяющий режим работы экрана: true — редактирование, false — создание нового списка.
     let isEditing: Bool
-    let listItem: ListItem?
+    let listItem: ShoppingList?
     
     @State private var text: String = ""
     @State private var selectedColor: Color?

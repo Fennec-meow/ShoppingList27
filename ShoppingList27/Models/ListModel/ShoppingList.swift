@@ -35,3 +35,7 @@ final class ShoppingList {
         self.circleIcon = circleIcon
     }
 }
+
+extension ShoppingList: Equatable, Hashable {
+    
+}

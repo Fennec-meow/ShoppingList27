@@ -13,20 +13,21 @@ final class NavigationRoute {
     enum Route: Hashable, Identifiable {
         case welcome
         case listMain
-        case listEditor(isEditing: Bool, listItem: ListItem? = nil)
-        case productList(listItem: ListItem)
+        case listEditor(isEditing: Bool, list: ShoppingList? = nil)
+        case productList(list: ShoppingList)
         case createProduct
         
         var id: String {
             switch self {
             case .welcome: return "welcome"
             case .listMain: return "listMain"
-            case .listEditor(let isEditing, let listItem):
-                    return "listEditor_\(isEditing)_\(listItem?.id.uuidString ?? "new")"
-            case .productList(let listItem):
-                    return "productList_\(listItem.id.uuidString)"
+            case .listEditor(let isEditing, let list):
+                let listID = list.map { String(describing: $0.persistentModelID) } ?? "new"
+                return "listEditor_\(isEditing)_\(listID)"
+            case .productList(let list):
+                return "productList_\(String(describing: list.persistentModelID))"
             case .createProduct:
-                    return "createProduct"
+                return "createProduct"
             }
         }
     }
