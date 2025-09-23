@@ -13,7 +13,7 @@ final class NavigationRoute {
     enum Route: Hashable, Identifiable {
         case welcome
         case listMain
-        case listEditor(list: ShoppingList? = nil)
+        case listEditor(list: ShoppingList? = nil, registeredTitles: [String])
         case productList(list: ShoppingList)
         case createProduct
         
@@ -21,7 +21,7 @@ final class NavigationRoute {
             switch self {
             case .welcome: return "welcome"
             case .listMain: return "listMain"
-            case .listEditor(let list):
+            case .listEditor(let list, let registeredTitles):
                 let listID = list.map { String(describing: $0.persistentModelID) } ?? "new"
                 return "listEditor_\(listID)"
             case .productList(let list):

@@ -16,10 +16,11 @@ struct ListEditorView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(NavigationRoute.self) private var router
     
-    private var buttonTitle: String
+    private let buttonTitle: String
     private let errorText = "Это название уже используется, пожалуйста, измените его."
     private let placeholder = "Введите название списка"
     private let shoppingList: ShoppingList?
+    private let registeredTitles: [String]
     
     // MARK: - Private Properties - State
     
@@ -60,7 +61,15 @@ struct ListEditorView: View {
     }
     
     private var isButtonEnabled: Bool {
-        !text.isEmpty && selectedColor != nil && selectedIcon != nil
+        !text.isEmpty && selectedColor != nil && selectedIcon != nil && !textFieldHasError
+    }
+    
+    private var textFieldHasError: Bool {
+        if let shoppingList {
+            registeredTitles.contains(text) && text != shoppingList.title
+        } else {
+            registeredTitles.contains(text)
+        }
     }
     
     // MARK: - Subviews
@@ -70,7 +79,7 @@ struct ListEditorView: View {
             BaseTextField(
                 text: $text,
                 placeholder: placeholder,
-                hasError: false,
+                hasError: textFieldHasError,
                 errorText: errorText
             )
             ColorPickerView(selectedColor: $selectedColor)
@@ -116,19 +125,20 @@ struct ListEditorView: View {
         }
     }
     
-    init(shoppingList: ShoppingList? = nil) {
+    init(shoppingList: ShoppingList? = nil, registeredTitles: [String]) {
         text = shoppingList?.title ?? ""
         selectedColor = shoppingList?.circleColor
         selectedIcon = shoppingList?.circleIcon
         self.shoppingList = shoppingList
         buttonTitle = shoppingList == nil ? "Создать" : "Сохранить"
+        self.registeredTitles = registeredTitles
     }
     
 }
 
 #Preview {
     NavigationStack {
-        ListEditorView(shoppingList: nil)
+        ListEditorView(shoppingList: nil, registeredTitles: ["123"])
             .environment(NavigationRoute())
     }
 }
