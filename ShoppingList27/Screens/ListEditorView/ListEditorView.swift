@@ -10,17 +10,18 @@ import SwiftData
 
 /// Экран для создания новых списков и создания новых
 struct ListEditorView: View {
-    /// Флаг, определяющий режим работы экрана: true — редактирование, false — создание нового списка.
-    let isEditing: Bool
-    let listItem: ShoppingList?
     
-    @State private var text: String = ""
+    private let shoppingList: ShoppingList?
+    
+    @State private var text: String
     @State private var selectedColor: Color?
     @State private var selectedIcon: String?
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) private var dismiss
-    
     @Environment(NavigationRoute.self) private var router
+    
+    private var isEditing: Bool {
+        shoppingList != nil
+    }
     
     private var buttonTitle: String {
         isEditing ? "Сохранить" : "Создать"
@@ -55,7 +56,6 @@ struct ListEditorView: View {
                     circleIcon: selectedIcon
                 )
                 modelContext.insert(newList)
-                dismiss()
             }
             .padding(.bottom, 20)
         }
@@ -69,24 +69,32 @@ struct ListEditorView: View {
             }
         }
     }
-        
-        private var backButton: some View {
-            Button {
-                router.pop()
-            } label: {
-                HStack(spacing: 8) {
-                    Image(systemName: "chevron.backward")
-                    Text(isEditing ? "Редактировать список" : "Создать список")
-                        .font(Font.Headline.medium)
-                }
+    
+    private var backButton: some View {
+        Button {
+            router.pop()
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "chevron.backward")
+                Text(isEditing ? "Редактировать список" : "Создать список")
+                    .font(Font.Headline.medium)
             }
-            .tint(.grey80)
         }
+        .tint(.grey80)
     }
+    
+    init(shoppingList: ShoppingList? = nil) {
+        text = shoppingList?.title ?? ""
+        selectedColor = shoppingList?.circleColor
+        selectedIcon = shoppingList?.circleIcon
+        self.shoppingList = shoppingList
+    }
+    
+}
 
 #Preview {
     NavigationStack {
-        ListEditorView(isEditing: false, listItem: nil)
+        ListEditorView(shoppingList: nil)
             .environment(NavigationRoute())
     }
 }
