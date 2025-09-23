@@ -76,19 +76,29 @@ struct ListEditorView: View {
                 backButton
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                toolbarTitle
+            }
+        }
     }
     
     private var backButton: some View {
         Button {
             router.pop()
         } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "chevron.backward")
-                Text(isEditing ? "Редактировать список" : "Создать список")
-                    .font(Font.Headline.medium)
-            }
+            Image(systemName: "chevron.backward")
         }
         .tint(.grey80)
+    }
+    
+    private var toolbarTitle: some View {
+        HStack(spacing: .zero) {
+            Text(isEditing ? "Редактировать список" : "Создать список")
+                .font(Font.Headline.medium)
+                .foregroundStyle(.grey80)
+            Spacer()
+        }
     }
     
     init(shoppingList: ShoppingList? = nil) {
