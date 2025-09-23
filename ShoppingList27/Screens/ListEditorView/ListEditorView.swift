@@ -11,62 +11,32 @@ import SwiftData
 /// Экран для создания новых списков и создания новых
 struct ListEditorView: View {
     
+    // MARK: - Private Properties
+    
+    @Environment(\.modelContext) private var modelContext
+    @Environment(NavigationRoute.self) private var router
+    
+    private var buttonTitle: String
+    private let errorText = "Это название уже используется, пожалуйста, измените его."
+    private let placeholder = "Введите название списка"
     private let shoppingList: ShoppingList?
+    
+    // MARK: - Private Properties - State
     
     @State private var text: String
     @State private var selectedColor: Color?
     @State private var selectedIcon: String?
-    @Environment(\.modelContext) private var modelContext
-    @Environment(NavigationRoute.self) private var router
     
-    private var isEditing: Bool {
-        shoppingList != nil
-    }
-    
-    private var buttonTitle: String {
-        isEditing ? "Сохранить" : "Создать"
-    }
-    private var isButtonEnabled: Bool {
-        !text.isEmpty && selectedColor != nil && selectedIcon != nil
-    }
-    private let errorText = "Это название уже используется, пожалуйста, измените его."
-    private let placeholder = "Введите название списка"
+    // MARK: - Body
     
     var body: some View {
-        VStack {
-            VStack(spacing: 24) {
-                BaseTextField(
-                    text: $text,
-                    placeholder: placeholder,
-                    hasError: false,
-                    errorText: errorText
-                )
-                ColorPickerView(selectedColor: $selectedColor)
-                DesignSelector(selectedIcon: $selectedIcon, selectionColor: selectedColor)
-            }
-            .padding(.top, 12)
-            
+        VStack(spacing: .zero) {
+            propertiesEditor
             Spacer()
-            
-            BaseButton(isActive: isButtonEnabled, title: buttonTitle) {
-                guard let selectedColor, let selectedIcon else { return }
-                if isEditing {
-                    shoppingList?.title = text
-                    shoppingList?.circleColor = selectedColor
-                    shoppingList?.circleIcon = selectedIcon
-                } else {
-                    let newList = ShoppingList(
-                        title: text,
-                        circleColor: selectedColor,
-                        circleIcon: selectedIcon
-                    )
-                    modelContext.insert(newList)
-                }
-                try? modelContext.save()
-                router.pop()
-            }
-            .padding(.bottom, 20)
+            saveButton
         }
+        .padding(.bottom, 20)
+        .padding(.top, 12)
         .padding(.horizontal, 16)
         .background(Color.backgroundScreen)
         .navigationBarTitleDisplayMode(.inline)
@@ -80,6 +50,51 @@ struct ListEditorView: View {
             ToolbarItem(placement: .principal) {
                 toolbarTitle
             }
+        }
+    }
+    
+    // MARK: - Private Properties - Computed
+    
+    private var isEditing: Bool {
+        shoppingList != nil
+    }
+    
+    private var isButtonEnabled: Bool {
+        !text.isEmpty && selectedColor != nil && selectedIcon != nil
+    }
+    
+    // MARK: - Subviews
+    
+    private var propertiesEditor: some View {
+        VStack(spacing: 24) {
+            BaseTextField(
+                text: $text,
+                placeholder: placeholder,
+                hasError: false,
+                errorText: errorText
+            )
+            ColorPickerView(selectedColor: $selectedColor)
+            DesignSelector(selectedIcon: $selectedIcon, selectionColor: selectedColor)
+        }
+    }
+    
+    private var saveButton: some View {
+        BaseButton(isActive: isButtonEnabled, title: buttonTitle) {
+            guard let selectedColor, let selectedIcon else { return }
+            if isEditing {
+                shoppingList?.title = text
+                shoppingList?.circleColor = selectedColor
+                shoppingList?.circleIcon = selectedIcon
+            } else {
+                let newList = ShoppingList(
+                    title: text,
+                    circleColor: selectedColor,
+                    circleIcon: selectedIcon
+                )
+                modelContext.insert(newList)
+            }
+            try? modelContext.save()
+            router.pop()
         }
     }
     
@@ -106,6 +121,7 @@ struct ListEditorView: View {
         selectedColor = shoppingList?.circleColor
         selectedIcon = shoppingList?.circleIcon
         self.shoppingList = shoppingList
+        buttonTitle = shoppingList == nil ? "Создать" : "Сохранить"
     }
     
 }
