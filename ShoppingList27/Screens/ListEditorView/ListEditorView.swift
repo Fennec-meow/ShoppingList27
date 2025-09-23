@@ -50,12 +50,20 @@ struct ListEditorView: View {
             
             BaseButton(isActive: isButtonEnabled, title: buttonTitle) {
                 guard let selectedColor, let selectedIcon else { return }
-                let newList = ShoppingList(
-                    title: text,
-                    circleColor: selectedColor,
-                    circleIcon: selectedIcon
-                )
-                modelContext.insert(newList)
+                if isEditing {
+                    shoppingList?.title = text
+                    shoppingList?.circleColor = selectedColor
+                    shoppingList?.circleIcon = selectedIcon
+                } else {
+                    let newList = ShoppingList(
+                        title: text,
+                        circleColor: selectedColor,
+                        circleIcon: selectedIcon
+                    )
+                    modelContext.insert(newList)
+                }
+                try? modelContext.save()
+                router.pop()
             }
             .padding(.bottom, 20)
         }
