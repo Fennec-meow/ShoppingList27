@@ -15,6 +15,7 @@ struct ListsMainView: View {
     @ObservedObject private var viewModel: ListsMainViewModel
     @State private var isCreatingNewList: Bool = false
     @AppStorage("ThemeType") private var selectedThemeType: ThemeType = .system
+    @Environment(\.colorScheme) private var colorScheme
     
     // MARK: - Body
     
@@ -92,7 +93,7 @@ struct ListsMainView: View {
         Menu {
             Picker(
                 selection: $selectedThemeType,
-                label: Label("Установить тему", systemImage: ImageTitles.theme)
+                label: Label("Установить тему", systemImage: colorScheme == .dark ? ImageTitles.themeDark : ImageTitles.themeLight)
             ) {
                 Text("Светлая").tag(ThemeType.light)
                 Text("Темная").tag(ThemeType.dark)
@@ -125,7 +126,8 @@ private extension ListsMainView {
     enum ImageTitles {
         static let settingsMenu = "ellipsis.circle"
         static let checkmark = "checkmark"
-        static let theme = "circle.righthalf.filled"
+        static let themeLight = "circle.righthalf.filled"
+        static let themeDark = "circle.lefthalf.filled"
     }
 }
 
