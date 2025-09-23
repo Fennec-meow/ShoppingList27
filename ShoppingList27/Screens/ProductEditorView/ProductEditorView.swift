@@ -12,6 +12,7 @@ struct ProductEditorView: View {
     
     // MARK: - Private Properties
     
+    @Environment(NavigationRoute.self) private var router
     @Environment(\.dismiss) private var dismiss
     private let saveAction: (String, Int, Product.UnitOfMeasure) -> Void
     private let pageTitle: String
@@ -101,7 +102,7 @@ struct ProductEditorView: View {
     
     private var cancelButton: some View {
         Button {
-            dismiss()
+            router.dismissAllModals()
         } label: {
             Text("Отменить")
                 .font(.Body.regular)
@@ -114,7 +115,7 @@ struct ProductEditorView: View {
             if let count, isSaveEnabled {
                 saveAction(productName, count, unit)
             }
-            dismiss()
+            router.dismissAllModals()
         } label: {
             Text("Готово")
                 .font(.Headline.semiBold)

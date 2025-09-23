@@ -10,15 +10,12 @@ import SwiftData
 
 @main
 struct ShoppingList27App: App {
-    @AppStorage("hasCompleteOnboarding") private var hasCompleteOnboarding = false
+    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
     @StateObject private var listsMainVM = ListsMainViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            if hasCompleteOnboarding {
-                ListsMainView(viewModel: listsMainVM)
-            } else {
-                WelcomeScreenView(hasCompletedOnboarding: $hasCompleteOnboarding)
-            }
+            RouteView(hasCompletedOnboarding: $hasCompletedOnboarding)
         }
         .modelContainer(for: [
             ShoppingList.self,

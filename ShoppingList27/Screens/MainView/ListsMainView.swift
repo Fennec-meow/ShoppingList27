@@ -16,22 +16,22 @@ struct ListsMainView: View {
     @ObservedObject private var viewModel: ListsMainViewModel
     @State private var isCreatingNewList: Bool = false
     
+    @Environment(NavigationRoute.self) private var router
+    
     // MARK: - Body
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.backgroundScreen
-                    .ignoresSafeArea()
-                content
+        ZStack {
+            Color.backgroundScreen
+                .ignoresSafeArea()
+            content
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                titleView
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    titleView
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    settingsMenu
-                }
+            ToolbarItem(placement: .topBarTrailing) {
+                settingsMenu
             }
         }
     }
@@ -59,6 +59,9 @@ struct ListsMainView: View {
         List {
             ForEach(lists) { list in
                 ListItemView(item: list)
+                    .onTapGesture {
+                        router.push(.productList(listItem: list))
+                    }
             }
             .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets())
@@ -77,6 +80,7 @@ struct ListsMainView: View {
                    action: {
             print("CreatingNewList")
             isCreatingNewList = true
+            router.push(.listEditor(isEditing: false, listItem: nil))
         })
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
@@ -119,6 +123,7 @@ private extension ListsMainView {
 
 // MARK: - Preview - Data
 #Preview("Data") {
+    let router = NavigationRoute()
     let viewModel = ListsMainViewModel()
     ListsMainView(viewModel: viewModel)
 }
