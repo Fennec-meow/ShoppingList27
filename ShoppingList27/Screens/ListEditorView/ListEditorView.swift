@@ -6,16 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 /// Экран для создания новых списков и создания новых
 struct ListEditorView: View {
     /// Флаг, определяющий режим работы экрана: true — редактирование, false — создание нового списка.
     let isEditing: Bool
-    let listItem: ListItem?
+    let listItem: ShoppingList?
     
     @State private var text: String = ""
     @State private var selectedColor: Color?
     @State private var selectedIcon: String?
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     
     @Environment(NavigationRoute.self) private var router
     
@@ -45,8 +48,14 @@ struct ListEditorView: View {
             Spacer()
             
             BaseButton(isActive: isButtonEnabled, title: buttonTitle) {
-                // Метод сохранения списка в БД
-                router.pop()
+                guard let selectedColor, let selectedIcon else { return }
+                let newList = ShoppingList(
+                    title: text,
+                    circleColor: selectedColor,
+                    circleIcon: selectedIcon
+                )
+                modelContext.insert(newList)
+                dismiss()
             }
             .padding(.bottom, 20)
         }

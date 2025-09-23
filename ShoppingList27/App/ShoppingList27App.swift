@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct ShoppingList27App: App {
@@ -16,5 +17,9 @@ struct ShoppingList27App: App {
         WindowGroup {
             RouteView(hasCompletedOnboarding: $hasCompletedOnboarding)
         }
+        .modelContainer(for: [
+            ShoppingList.self,
+            Product.self
+        ])
     }
 }
