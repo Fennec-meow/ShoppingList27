@@ -10,9 +10,13 @@ import SwiftUI
 struct ProductCellView: View {
     var product: Product
     
+    var action: ((Product) -> Void)?
+    
     var body: some View {
         HStack {
-            Button("", action: { product.isBought.toggle() })
+            Button("", action: { guard let action else { return }
+                action(product)
+                })
                 .buttonStyle(.checkbox(isChecked: product.isBought))
             
             Group {

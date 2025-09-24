@@ -13,6 +13,7 @@ struct ProductEditorView: View {
     // MARK: - Private Properties
     
     @Environment(NavigationRoute.self) private var router
+    @Environment(\.modelContext) private var modelContext
 
     private let pageTitle: String
     private let registeredNames: [String]
@@ -139,7 +140,12 @@ struct ProductEditorView: View {
             product.unitMeasure = unit
         } else {
             let product = Product(name: name, count: count, unitMeasure: unit, list: shoppingList)
-            shoppingList.productList.append(product)
+            modelContext.insert(product)
+        }
+        do {
+            try modelContext.save()
+        } catch {
+            print("Something went wrong")
         }
     }
     
@@ -159,7 +165,6 @@ struct ProductEditorView: View {
             self.registeredNames = registeredNames
         }
     }
-    
 }
 
 // MARK: - Previews

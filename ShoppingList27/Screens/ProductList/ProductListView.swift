@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ProductListView: View {
     
@@ -16,7 +17,7 @@ struct ProductListView: View {
     
     private let backButtonTitleFont: Font = Font.Headline.medium
     
-    init(selectedShoppingList: ShoppingList? = nil, viewModel: ProductListViewModelProtocol? = nil) {
+    init(selectedShoppingList: ShoppingList, viewModel: ProductListViewModelProtocol? = nil) {
         self.viewModel = viewModel ?? ProductListViewModel(shoppingList: selectedShoppingList)
     }
     
@@ -72,7 +73,7 @@ struct ProductListView: View {
         List {
             let id = viewModel.products.first?.id
             ForEach(viewModel.products, id: \.id) { product in
-                ProductCellView(product: product)
+                ProductCellView(product: product, action: productCellCheckBoxWasPressed)
                     .listRowBackground(Color.clear)
                     .listRowSeparatorTint(.strokePanel)
                     .listRowSeparator(id == product.id ? .hidden : .visible, edges: .top)
@@ -149,6 +150,10 @@ struct ProductListView: View {
     
     private func editProductButtonWasPressed(product: Product) {
         viewModel.editProduct(product)
+    }
+    
+    private func productCellCheckBoxWasPressed(_ product: Product) {
+        viewModel.toggleProductIsBought(product)
     }
 }
 

@@ -10,6 +10,7 @@ import SwiftData
 
 @MainActor
 @Observable final class ProductListViewModel: ProductListViewModelProtocol {
+
     var listName: String {
         shoppingList?.title ?? "Unknown List"
     }
@@ -57,6 +58,15 @@ import SwiftData
         router?.showSheet(.createProduct(list: shoppingList, product: product))
     }
     
+    func toggleProductIsBought(_ product: Product) {
+        do {
+            product.isBought.toggle()
+            try modelContext?.save()
+        } catch {
+            print("Something went wrong")
+        }
+    }
+    
     func hideView() {
         router?.pop()
     }
@@ -74,10 +84,14 @@ protocol ProductListViewModelProtocol {
     func setRouter(_ router: NavigationRoute?)
     func hideView()
     func setModelContext(_ modelContext: ModelContext)
+    func toggleProductIsBought(_ product: Product)
 }
 
 @MainActor
 @Observable final class ProductListViewModelMock: ProductListViewModelProtocol {
+    func toggleProductIsBought(_ product: Product) {
+
+    }
 
     let listName: String
     var products: [Product]
