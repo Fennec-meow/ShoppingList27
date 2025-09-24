@@ -80,7 +80,7 @@ struct ListsMainView: View {
                    action: {
             print("CreatingNewList")
             isCreatingNewList = true
-            router.push(.listEditor(isEditing: false))
+            router.push(.listEditor(list: nil, registeredTitles: []))
         })
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
