@@ -13,10 +13,12 @@ struct ProductEditorView: View {
     // MARK: - Private Properties
     
     @Environment(NavigationRoute.self) private var router
-    @Environment(\.dismiss) private var dismiss
-    private let saveAction: (String, Int, Product.UnitOfMeasure) -> Void
+
     private let pageTitle: String
     private let registeredNames: [String]
+    
+    private let shoppingList: ShoppingList
+    private let product: Product?
     
     // MARK: - Private Properties - State
     
@@ -130,8 +132,22 @@ struct ProductEditorView: View {
             .clipShape(RoundedRectangle(cornerRadius: 2.5))
     }
     
-    init(product: Product?, registeredNames: [String] = [], onSave: @escaping (String, Int, Product.UnitOfMeasure) -> Void) {
-        saveAction = onSave
+    private func saveAction(_ name: String, _ count: Int, _ unit: Product.UnitOfMeasure) {
+        if let product {
+            product.name = name
+            product.count = count
+            product.unitMeasure = unit
+        } else {
+            let product = Product(name: name, count: count, unitMeasure: unit, list: shoppingList)
+            shoppingList.productList.append(product)
+        }
+    }
+    
+    init(product: Product?, shoppingList: ShoppingList) {
+        self.product = product
+        self.shoppingList = shoppingList
+        let registeredNames = shoppingList.productList.map { $0.name }
+        
         if let product {
             productName = product.name
             count = product.count
@@ -155,35 +171,23 @@ struct ProductEditorView: View {
         isShown = true
     }
     .sheet(isPresented: $isShown) {
-        ProductEditorView(product: nil,
-                          registeredNames: ["Текст", "Ошибка"]) { name, count, unit in
-            let newProduct = Product(name: name,
-                                     count: count,
-                                     unitMeasure: unit,
-                                     isBought: false,
-                                     list: list)
-            print("Save \(newProduct)")
-        }
+        ProductEditorView(product: nil, shoppingList: list)
     }
 }
 
 #Preview("Edit Product") {
+    @Previewable @State var isShown: Bool = false
     @Previewable @State var product = Product(name: "Чайник",
                                               count: 1,
                                               unitMeasure: .piece,
                                               list: ShoppingList(title: "List", circleColor: .addBlue, circleIcon: Icons.alert.rawValue))
     
-    @Previewable @State var isShown: Bool = false
+    let list = ShoppingList(title: "List", circleColor: .addBlue, circleIcon: Icons.alert.rawValue)
     Button("Show modal view") {
         isShown = true
     }
     .sheet(isPresented: $isShown) {
         ProductEditorView(product: product,
-                          registeredNames: ["Текст", "Ошибка", "Чайник"]) { name, count, unit in
-            product.name = name
-            product.count = count
-            product.unitMeasure = unit
-            print("Save \(product)")
-        }
+                        shoppingList: list)
     }
 }

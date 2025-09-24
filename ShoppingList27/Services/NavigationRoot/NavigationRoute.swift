@@ -15,7 +15,7 @@ final class NavigationRoute {
         case listMain
         case listEditor(isEditing: Bool, list: ShoppingList? = nil)
         case productList(list: ShoppingList)
-        case createProduct
+        case createProduct(list: ShoppingList, product: Product?)
         
         var id: String {
             switch self {
@@ -26,8 +26,8 @@ final class NavigationRoute {
                 return "listEditor_\(isEditing)_\(listID)"
             case .productList(let list):
                 return "productList_\(String(describing: list.persistentModelID))"
-            case .createProduct:
-                return "createProduct"
+            case .createProduct(let list, let product):
+                return "createProduct_\(list.title)_(\(product?.name ?? "new"))"
             }
         }
     }

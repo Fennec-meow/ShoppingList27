@@ -4,6 +4,7 @@
 //
 //  Created by Алина on 16.09.2025.
 //
+
 import SwiftUI
 
 struct RouteView: View {
@@ -52,14 +53,10 @@ struct RouteView: View {
         case .listEditor(let isEditing, let listItem):
                 ListEditorView(isEditing: isEditing, listItem: listItem)
         case .productList(let listItem):
-                ProductListView(listName: listItem.title)
-        case .createProduct:
+                ProductListView(selectedShoppingList: listItem)
+        case .createProduct(let list, let product):
                 ProductEditorView(
-                    product: nil,
-                    registeredNames: [],
-                    onSave: { _, _, _ in
-                        // метод для сохранения в SwiftData
-                    }
+                    product: product, shoppingList: list
                 )
         }
     }
