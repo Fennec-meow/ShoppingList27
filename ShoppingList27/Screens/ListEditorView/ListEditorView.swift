@@ -10,55 +10,34 @@ import SwiftData
 
 /// Экран для создания новых списков и создания новых
 struct ListEditorView: View {
-    /// Флаг, определяющий режим работы экрана: true — редактирование, false — создание нового списка.
-    let isEditing: Bool
-    let listItem: ShoppingList?
     
-    @State private var text: String = ""
-    @State private var selectedColor: Color?
-    @State private var selectedIcon: String?
+    // MARK: - Private Properties
+    
     @Environment(\.modelContext) private var modelContext
-    @Environment(\.dismiss) private var dismiss
-    
     @Environment(NavigationRoute.self) private var router
     
-    private var buttonTitle: String {
-        isEditing ? "Сохранить" : "Создать"
-    }
-    private var isButtonEnabled: Bool {
-        !text.isEmpty && selectedColor != nil && selectedIcon != nil
-    }
+    private let buttonTitle: String
     private let errorText = "Это название уже используется, пожалуйста, измените его."
     private let placeholder = "Введите название списка"
+    private let shoppingList: ShoppingList?
+    private let registeredTitles: [String]
+    
+    // MARK: - Private Properties - State
+    
+    @State private var text: String
+    @State private var selectedColor: Color?
+    @State private var selectedIcon: String?
+    
+    // MARK: - Body
     
     var body: some View {
-        VStack {
-            VStack(spacing: 24) {
-                BaseTextField(
-                    text: $text,
-                    placeholder: placeholder,
-                    hasError: false,
-                    errorText: errorText
-                )
-                ColorPickerView(selectedColor: $selectedColor)
-                DesignSelector(selectedIcon: $selectedIcon, selectionColor: selectedColor)
-            }
-            .padding(.top, 12)
-            
+        VStack(spacing: .zero) {
+            propertiesEditor
             Spacer()
-            
-            BaseButton(isActive: isButtonEnabled, title: buttonTitle) {
-                guard let selectedColor, let selectedIcon else { return }
-                let newList = ShoppingList(
-                    title: text,
-                    circleColor: selectedColor,
-                    circleIcon: selectedIcon
-                )
-                modelContext.insert(newList)
-                dismiss()
-            }
-            .padding(.bottom, 20)
+            saveButton
         }
+        .padding(.bottom, 20)
+        .padding(.top, 12)
         .padding(.horizontal, 16)
         .background(Color.backgroundScreen)
         .navigationBarTitleDisplayMode(.inline)
@@ -68,25 +47,111 @@ struct ListEditorView: View {
                 backButton
             }
         }
-    }
-        
-        private var backButton: some View {
-            Button {
-                router.pop()
-            } label: {
-                HStack(spacing: 8) {
-                    Image(systemName: "chevron.backward")
-                    Text(isEditing ? "Редактировать список" : "Создать список")
-                        .font(Font.Headline.medium)
-                }
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                toolbarTitle
             }
-            .tint(.grey80)
         }
     }
+    
+    // MARK: - Private Properties - Computed
+    
+    private var isEditing: Bool {
+        shoppingList != nil
+    }
+    
+    private var isButtonEnabled: Bool {
+        !text.isEmpty && selectedColor != nil && selectedIcon != nil && !textFieldHasError
+    }
+    
+    private var textFieldHasError: Bool {
+        if let shoppingList {
+            registeredTitles.contains(text) && text != shoppingList.title
+        } else {
+            registeredTitles.contains(text)
+        }
+    }
+    
+    // MARK: - Subviews
+    
+    private var propertiesEditor: some View {
+        VStack(spacing: 24) {
+            BaseTextField(
+                text: $text,
+                placeholder: placeholder,
+                hasError: textFieldHasError,
+                errorText: errorText
+            )
+            ColorPickerView(selectedColor: $selectedColor)
+            DesignSelector(selectedIcon: $selectedIcon, selectionColor: selectedColor)
+        }
+    }
+    
+    private var saveButton: some View {
+        BaseButton(isActive: isButtonEnabled, title: buttonTitle) {
+            applyChanges()
+            router.pop()
+        }
+    }
+    
+    private var backButton: some View {
+        Button {
+            router.pop()
+        } label: {
+            Image(systemName: "chevron.backward")
+        }
+        .tint(.grey80)
+    }
+    
+    private var toolbarTitle: some View {
+        HStack(spacing: .zero) {
+            Text(isEditing ? "Редактировать список" : "Создать список")
+                .font(Font.Headline.medium)
+                .foregroundStyle(.grey80)
+            Spacer()
+        }
+    }
+    
+    // MARK: - Private Methods
+    
+    func applyChanges() {
+        guard let selectedColor, let selectedIcon else { return }
+        if isEditing {
+            shoppingList?.title = text
+            shoppingList?.circleColor = selectedColor
+            shoppingList?.circleIcon = selectedIcon
+        } else {
+            let newList = ShoppingList(
+                title: text,
+                circleColor: selectedColor,
+                circleIcon: selectedIcon
+            )
+            modelContext.insert(newList)
+        }
+        do {
+            try modelContext.save()
+        } catch {
+            print("ListEditorView.applyChanges: save error \(error)")
+        }
+    }
+    
+    // MARK: - Initializer
+    
+    init(shoppingList: ShoppingList? = nil, registeredTitles: [String]) {
+        text = shoppingList?.title ?? ""
+        selectedColor = shoppingList?.circleColor
+        selectedIcon = shoppingList?.circleIcon
+        self.shoppingList = shoppingList
+        buttonTitle = shoppingList == nil ? "Создать" : "Сохранить"
+        self.registeredTitles = registeredTitles
+    }
+    
+}
 
+// MARK: - Preview
 #Preview {
     NavigationStack {
-        ListEditorView(isEditing: false, listItem: nil)
+        ListEditorView(shoppingList: nil, registeredTitles: ["123"])
             .environment(NavigationRoute())
     }
 }
