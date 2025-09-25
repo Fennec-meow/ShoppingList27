@@ -28,6 +28,11 @@ extension Font {
         static var medium: Font {
             Font.system(size: 17, weight: .medium)
         }
+        /// Готово
+        /// Создание товара
+        static var semiBold: Font {
+            Font.system(size: 16, weight: .semibold)
+        }
     }
     
     enum Body {

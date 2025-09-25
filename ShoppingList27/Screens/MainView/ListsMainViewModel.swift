@@ -11,7 +11,7 @@ final class ListsMainViewModel: ObservableObject {
     
     // MARK: - Internal Properties
     
-    @Published private(set) var lists: [ListItem] = []
+    @Published private(set) var lists: [ShoppingList] = ShoppingListSample.contents
     
     var shouldDisplayPlaceholder: Bool {
         lists.isEmpty
@@ -19,7 +19,7 @@ final class ListsMainViewModel: ObservableObject {
     
     // MARK: - Internal Methods
     
-    func insert(list: ListItem) {
+    func insert(list: ShoppingList) {
         lists.append(list)
     }
     

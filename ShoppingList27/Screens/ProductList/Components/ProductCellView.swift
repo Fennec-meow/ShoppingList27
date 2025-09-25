@@ -12,7 +12,7 @@ struct ProductCellView: View {
     
     var body: some View {
         HStack {
-            Button("", action: { product.toggleBought() })
+            Button("", action: { product.isBought.toggle() })
                 .buttonStyle(.checkbox(isChecked: product.isBought))
             
             Group {
@@ -28,22 +28,7 @@ struct ProductCellView: View {
 }
 
 #Preview {
-    let productCellPreview = VStack(alignment: .leading, spacing: 20) {
-        ProductCellView(product: .mock1)
-            .padding(.horizontal, 28)
-        Divider()
-        ProductCellView(product: .mock2)
-            .padding(.horizontal, 28)
-        Divider()
-        ProductCellView(product: .mock3)
-            .padding(.horizontal, 28)
-    }
-    .frame(maxHeight: .infinity)
-    .background(Color.backgroundScreen)
-    
-    productCellPreview
-        .colorScheme(.light)
-    
-    productCellPreview
-        .colorScheme(.dark)
+    ProductCellView(product: ProductSample.contents[0])
+        .frame(maxHeight: .infinity)
+        .background(Color.backgroundScreen)
 }

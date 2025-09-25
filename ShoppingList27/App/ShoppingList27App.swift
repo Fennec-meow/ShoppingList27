@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct ShoppingList27App: App {
@@ -15,19 +16,17 @@ struct ShoppingList27App: App {
     
     var body: some Scene {
         WindowGroup {
-            Group {
-                if hasCompleteOnboarding {
-                    ListsMainView(viewModel: listsMainVM)
-                } else {
-                    WelcomeScreenView(hasCompletedOnboarding: $hasCompleteOnboarding)
-                }
-            }
-            .preferredColorScheme(
-                selectedThemeType == .system
-                ? nil
-                : (selectedThemeType == .light ? .light : .dark)
-            )
+            RouteView(hasCompletedOnboarding: $hasCompletedOnboarding)
+                .preferredColorScheme(
+                    selectedThemeType == .system
+                    ? nil
+                    : (selectedThemeType == .light ? .light : .dark)
+                )
         }
+        .modelContainer(for: [
+            ShoppingList.self,
+            Product.self
+        ])
     }
 }
 

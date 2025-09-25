@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 // MARK: - ListsMainView
 struct ListsMainView: View {
-    
+    @Query private var lists: [ShoppingList]
     // MARK: - Private Properties
     
     @ObservedObject private var viewModel: ListsMainViewModel
@@ -17,22 +18,22 @@ struct ListsMainView: View {
     @AppStorage("ThemeType") private var selectedThemeType: ThemeType = .system
     @Environment(\.colorScheme) private var colorScheme
     
+    @Environment(NavigationRoute.self) private var router
+    
     // MARK: - Body
     
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.backgroundScreen
-                    .ignoresSafeArea()
-                content
+        ZStack {
+            Color.backgroundScreen
+                .ignoresSafeArea()
+            content
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                titleView
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    titleView
-                }
-                ToolbarItem(placement: .topBarTrailing) {
-                    settingsMenu
-                }
+            ToolbarItem(placement: .topBarTrailing) {
+                settingsMenu
             }
         }
     }
@@ -41,7 +42,7 @@ struct ListsMainView: View {
     
     @ViewBuilder
     private var content: some View {
-        if viewModel.shouldDisplayPlaceholder {
+        if lists.isEmpty {
             EmptyListPlaceholderView()
                 .padding(.horizontal, 16)
                 .frame(maxHeight: .infinity)
@@ -58,8 +59,11 @@ struct ListsMainView: View {
     
     private var listsScrollView: some View {
         List {
-            ForEach(viewModel.lists) { list in
+            ForEach(lists) { list in
                 ListItemView(item: list)
+                    .onTapGesture {
+                        router.push(.productList(list: list))
+                    }
             }
             .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets())
@@ -78,6 +82,7 @@ struct ListsMainView: View {
                    action: {
             print("CreatingNewList")
             isCreatingNewList = true
+            router.push(.listEditor(list: nil, registeredTitles: []))
         })
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
@@ -135,21 +140,14 @@ private extension ListsMainView {
 
 // MARK: - Preview - Data
 #Preview("Data") {
+    let router = NavigationRoute()
     let viewModel = ListsMainViewModel()
-    viewModel.insert(list: .mock)
-    viewModel.insert(list: .mock2)
-    viewModel.insert(list: .mock3)
-    viewModel.insert(list: .mock)
-    viewModel.insert(list: .mock2)
-    viewModel.insert(list: .mock3)
-    viewModel.insert(list: .mock)
-    viewModel.insert(list: .mock2)
-    viewModel.insert(list: .mock3)
-    return ListsMainView(viewModel: viewModel)
+    ListsMainView(viewModel: viewModel)
+        .environment(router)
 }
 
 // MARK: - Preview - Empty
 #Preview("Empty") {
     let viewModel = ListsMainViewModel()
-    return ListsMainView(viewModel: viewModel)
+    ListsMainView(viewModel: viewModel)
 }
