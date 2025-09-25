@@ -6,18 +6,19 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ProductListView: View {
     
-    @State var viewModel: ProductListViewModelProtocol
-    
-    @Environment(\.dismiss) private var dismiss
     @Environment(NavigationRoute.self) private var router
+    @Environment(\.modelContext) private var modelContext
+    
+    @State var viewModel: ProductListViewModelProtocol
     
     private let backButtonTitleFont: Font = Font.Headline.medium
     
-    init(listName: String, viewModel: ProductListViewModelProtocol? = nil) {
-        self.viewModel = viewModel ?? ProductListViewModel(listName: listName)
+    init(selectedShoppingList: ShoppingList, viewModel: ProductListViewModelProtocol? = nil) {
+        self.viewModel = viewModel ?? ProductListViewModel(shoppingList: selectedShoppingList)
     }
     
     var body: some View {
@@ -31,6 +32,10 @@ struct ProductListView: View {
                 }
             }
             .navigationBarBackButtonHidden()
+            .onAppear {
+                self.viewModel.setRouter(router)
+                self.viewModel.setModelContext(modelContext)
+            }
     }
     
     private var mainView: some View {
@@ -53,7 +58,6 @@ struct ProductListView: View {
             .safeAreaInset(edge: .bottom, spacing: 60) {
                 BaseButton(title: "Добавить товар") {
                     addProductButtonWasTapped()
-                    router.showSheet(.createProduct)
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 20)
@@ -69,7 +73,7 @@ struct ProductListView: View {
         List {
             let id = viewModel.products.first?.id
             ForEach(viewModel.products, id: \.id) { product in
-                ProductCellView(product: product)
+                ProductCellView(product: product, action: productCellCheckBoxWasPressed)
                     .listRowBackground(Color.clear)
                     .listRowSeparatorTint(.strokePanel)
                     .listRowSeparator(id == product.id ? .hidden : .visible, edges: .top)
@@ -92,7 +96,7 @@ struct ProductListView: View {
     
     private var backButton: some View {
         Button {
-            router.pop()
+            viewModel.hideView()
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "chevron.backward")
@@ -133,7 +137,7 @@ struct ProductListView: View {
     }
     
     private func addProductButtonWasTapped() {
-        print("Tapped add product button")
+        viewModel.addProduct()
     }
     
     private func optionsButtonWasTapped() {
@@ -147,30 +151,23 @@ struct ProductListView: View {
     private func editProductButtonWasPressed(product: Product) {
         viewModel.editProduct(product)
     }
+    
+    private func productCellCheckBoxWasPressed(_ product: Product) {
+        viewModel.toggleProductIsBought(product)
+    }
 }
 
 #Preview {
-    @Previewable @State var isProductListPresented: Bool = true
+//    @Previewable @State var hasCompletedOnboarding: Bool = true
+//    
+//    let products: [Product] = ProductSample.contents
     
-    let products: [Product] = ProductSample.contents
-    
-//    let products: [Product] = []
-    
-    let viewModel = ProductListViewModelMock(listName: "Новый год", products: products)
-    let router = NavigationRoute()
-    
-    NavigationStack {
-        VStack(spacing: 80) {
-            Text("Main Screen")
-            BaseButton(title: "Show Product List") {
-                isProductListPresented = true
-            }
-        }
-        .padding()
-            .navigationDestination(isPresented: $isProductListPresented) {
-                ProductListView(listName: "Новый год", viewModel: viewModel)
-                    .environment(router)
-            }
-    }
-    .environment(router)
+//    let list: ShoppingList = ShoppingList(title: "Новый год", circleColor: .blue, circleIcon: Image(systemName: "plus))")
+//    
+//    let viewModel = ProductListViewModelMock(listName: "Новый год", products: products)
+//    let router = NavigationRoute()
+//    
+//    VStack {
+//        ProductListView(viewModel: viewModel)
+//    }
 }

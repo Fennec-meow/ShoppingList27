@@ -21,11 +21,11 @@ struct EmptyListPlaceholderView: View {
     private let regular17 = Font.system(size: 17, weight: .regular)
     
     var body: some View {
-            VStack(spacing: 28) {
-                imageContent
-                textContent
-            }
-            .frame(alignment: .center)
+        VStack(spacing: 28) {
+            imageContent
+            textContent
+        }
+        .frame(alignment: .center)
     }
     
     private var imageContent: some View {

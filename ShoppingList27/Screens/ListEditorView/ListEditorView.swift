@@ -145,7 +145,6 @@ struct ListEditorView: View {
         buttonTitle = shoppingList == nil ? "Создать" : "Сохранить"
         self.registeredTitles = registeredTitles
     }
-    
 }
 
 // MARK: - Preview
