@@ -9,16 +9,20 @@ import SwiftUI
 import SwiftData
 
 // MARK: - ListsMainView
+
 struct ListsMainView: View {
+    
+    // MARK: Private Properties
+    
     @Query private var lists: [ShoppingList]
-    // MARK: - Private Properties
     
     @ObservedObject private var viewModel: ListsMainViewModel
     @State private var isCreatingNewList: Bool = false
     
     @Environment(NavigationRoute.self) private var router
+    @Environment(\.modelContext) private var context
     
-    // MARK: - Body
+    // MARK: Body
     
     var body: some View {
         ZStack {
@@ -36,10 +40,19 @@ struct ListsMainView: View {
         }
     }
     
-    // MARK: - Subviews
+    // MARK: Initializer
+    
+    init(viewModel: ListsMainViewModel) {
+        self.viewModel = viewModel
+    }
+}
+
+// MARK: - Subviews
+
+private extension ListsMainView {
     
     @ViewBuilder
-    private var content: some View {
+    var content: some View {
         if lists.isEmpty {
             EmptyListPlaceholderView()
                 .padding(.horizontal, 16)
@@ -55,10 +68,15 @@ struct ListsMainView: View {
         }
     }
     
-    private var listsScrollView: some View {
+    var listsScrollView: some View {
         List {
             ForEach(lists) { list in
                 ListItemView(item: list)
+                    .swipeActions(allowsFullSwipe: false) {
+                        createDeleteListButton(list: list)
+                        createDuplicateListButton(list: list)
+                        createEditListButton(list: list)
+                    }
                     .onTapGesture {
                         router.push(.productList(list: list))
                     }
@@ -75,7 +93,7 @@ struct ListsMainView: View {
         .scrollIndicators(.hidden)
     }
     
-    private var createListButton: some View {
+    var createListButton: some View {
         BaseButton(title: Strings.createList,
                    action: {
             print("CreatingNewList")
@@ -86,28 +104,71 @@ struct ListsMainView: View {
         .padding(.bottom, 20)
     }
     
-    private var titleView: some View {
+    var titleView: some View {
         Text(Strings.title)
             .font(.Title1.semiBold)
             .foregroundStyle(Color.grey80)
     }
     
-    private var settingsMenu: some View {
+    var settingsMenu: some View {
         Menu("SettingsMenu",
              systemImage: ImageTitles.settingsMenu,
              content: { })
         .tint(Color.grey80)
     }
-    
-    // MARK: - Initializer
-    
-    init(viewModel: ListsMainViewModel) {
-        self.viewModel = viewModel
-    }
-    
 }
 
-// MARK: - Extension - Constants
+// MARK: - Private Methods
+
+private extension ListsMainView {
+    func editListButtonWasPressed(list: ShoppingList) {
+        viewModel.editList(list)
+        router.push(.listEditor(list: list, registeredTitles: []))
+    }
+    
+    func duplicatingListButtonWasPressed(list: ShoppingList) {
+        let duplicatedList = viewModel.duplicatingList(list, context: context)
+        router.push(.listEditor(list: duplicatedList, registeredTitles: []))
+    }
+    
+    func deleteListButtonWasPressed(list: ShoppingList) {
+        viewModel.deleteList(list, context: context)
+    }
+    
+    func createEditListButton(list: ShoppingList) -> some View {
+        Button {
+            editListButtonWasPressed(list: list)
+        }
+        label: {
+            Image(systemName: "square.and.pencil")
+        }
+        .tint(.uniGrey)
+    }
+    
+    func createDuplicateListButton(list: ShoppingList) -> some View {
+        Button {
+            duplicatingListButtonWasPressed(list: list)
+        }
+        label: {
+            Image(systemName: "plus.square.on.square")
+        }
+        .tint(.uniOrange)
+    }
+    
+    func createDeleteListButton(list: ShoppingList) -> some View {
+        Button {
+            deleteListButtonWasPressed(list: list)
+        }
+        label: {
+            Image(systemName: "trash")
+                .environment(\.symbolVariants, .none)
+        }
+        .tint(.uniRed)
+    }
+}
+
+// MARK: - Constants
+
 private extension ListsMainView {
     enum Strings {
         static let title = "Мои списки"
@@ -119,6 +180,7 @@ private extension ListsMainView {
 }
 
 // MARK: - Preview - Data
+
 #Preview("Data") {
     let router = NavigationRoute()
     let viewModel = ListsMainViewModel()
@@ -127,6 +189,7 @@ private extension ListsMainView {
 }
 
 // MARK: - Preview - Empty
+
 #Preview("Empty") {
     let viewModel = ListsMainViewModel()
     ListsMainView(viewModel: viewModel)
