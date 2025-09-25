@@ -15,6 +15,8 @@ struct ListsMainView: View {
     
     @ObservedObject private var viewModel: ListsMainViewModel
     @State private var isCreatingNewList: Bool = false
+    @AppStorage("ThemeType") private var selectedThemeType: ThemeType = .system
+    @Environment(\.colorScheme) private var colorScheme
     
     @Environment(NavigationRoute.self) private var router
     
@@ -80,7 +82,7 @@ struct ListsMainView: View {
                    action: {
             print("CreatingNewList")
             isCreatingNewList = true
-            router.push(.listEditor(isEditing: false))
+            router.push(.listEditor(list: nil, registeredTitles: []))
         })
         .padding(.horizontal, 16)
         .padding(.bottom, 20)
@@ -93,18 +95,33 @@ struct ListsMainView: View {
     }
     
     private var settingsMenu: some View {
-        Menu("SettingsMenu",
-             systemImage: ImageTitles.settingsMenu,
-             content: { })
+        Menu {
+            Picker(
+                selection: $selectedThemeType,
+                label: Label("Установить тему", systemImage: colorScheme == .dark
+                             ? ImageTitles.themeDark
+                             : ImageTitles.themeLight)
+            ) {
+                Text("Светлая").tag(ThemeType.light)
+                Text("Темная").tag(ThemeType.dark)
+                Text("Системная").tag(ThemeType.system)
+            }
+            .pickerStyle(.menu)
+        } label: {
+            Image(systemName: ImageTitles.settingsMenu)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24, height: 24)
+                .foregroundStyle(Color.colorBlack)
+        }
         .tint(Color.grey80)
     }
-    
+
     // MARK: - Initializer
-    
     init(viewModel: ListsMainViewModel) {
         self.viewModel = viewModel
     }
-    
+
 }
 
 // MARK: - Extension - Constants
@@ -115,6 +132,9 @@ private extension ListsMainView {
     }
     enum ImageTitles {
         static let settingsMenu = "ellipsis.circle"
+        static let checkmark = "checkmark"
+        static let themeLight = "circle.righthalf.filled"
+        static let themeDark = "circle.lefthalf.filled"
     }
 }
 

@@ -50,8 +50,8 @@ struct RouteView: View {
                 WelcomeScreenView(hasCompletedOnboarding: $hasCompletedOnboarding)
         case .listMain:
                 ListsMainView(viewModel: ListsMainViewModel())
-        case .listEditor(let isEditing, let listItem):
-                ListEditorView(isEditing: isEditing, listItem: listItem)
+        case .listEditor(let list, let registeredTitles):
+                ListEditorView(shoppingList: list, registeredTitles: registeredTitles)
         case .productList(let listItem):
                 ProductListView(selectedShoppingList: listItem)
         case .createProduct(let list, let product):
