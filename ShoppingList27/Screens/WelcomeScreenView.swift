@@ -7,15 +7,10 @@
 
 import SwiftUI
 
+// MARK: - WelcomeScreenView
+
 struct WelcomeScreenView: View {
     @Binding var hasCompletedOnboarding: Bool
-    
-    private enum Strings {
-        static let header = "Добро пожаловать!"
-        static let headline = "Никогда не забывайте,\nчто нужно купить"
-        static let subHeadline = "Создавайте списки\nи не переживайте о покупках"
-        static let buttonTitle = "Начать"
-    }
     
     var body: some View {
         VStack {
@@ -52,6 +47,19 @@ struct WelcomeScreenView: View {
         .background(.backgroundScreen)
     }
 }
+
+// MARK: - Constants
+
+private extension WelcomeScreenView {
+    enum Strings {
+        static let header = "Добро пожаловать!"
+        static let headline = "Никогда не забывайте,\nчто нужно купить"
+        static let subHeadline = "Создавайте списки\nи не переживайте о покупках"
+        static let buttonTitle = "Начать"
+    }
+}
+
+// MARK: - Preview
 
 #Preview {
     @Previewable @State var hasCompletedOnboarding = false

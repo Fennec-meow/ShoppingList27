@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - UnitsPickerView
+
 struct UnitsPickerView: View {
     
     @Binding private var selectedUnit: Product.UnitOfMeasure
@@ -23,14 +25,24 @@ struct UnitsPickerView: View {
         .background(Color.bgcolor)
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
-    
-    private var titleLabel: some View {
+
+    // MARK: Initializer
+
+    init(unit: Binding<Product.UnitOfMeasure>) {
+        self._selectedUnit = unit
+    }
+}
+
+// MARK: - Subviews
+
+private extension UnitsPickerView {
+    var titleLabel: some View {
         Text("Ед.изм.:")
             .font(.Body.regular)
             .foregroundStyle(.hint)
     }
     
-    private var pickerView: some View {
+    var pickerView: some View {
         Picker("Unit Picker", selection: $selectedUnit) {
             ForEach(Product.UnitOfMeasure.allCases) { unit in
                 Text(unit.shortName)
@@ -39,11 +51,9 @@ struct UnitsPickerView: View {
         .pickerStyle(.menu)
         .tint(.uniTurquoise)
     }
-    
-    init(unit: Binding<Product.UnitOfMeasure>) {
-        self._selectedUnit = unit
-    }
 }
+
+// MARK: - Preview
 
 #Preview {
     @Previewable @State var unit: Product.UnitOfMeasure = .piece

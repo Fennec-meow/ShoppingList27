@@ -7,15 +7,9 @@
 
 import SwiftUI
 
+// MARK: - EmptyProductListView
+
 struct EmptyProductListView: View {
-    
-    private var titleFont: Font {
-        Font.Title3.medium
-    }
-    
-    private var subtitleFont: Font {
-        Font.Body.regular
-    }
     
     var body: some View {
         VStack(spacing: 28) {
@@ -26,22 +20,27 @@ struct EmptyProductListView: View {
             }
         }
     }
+}
+
+// MARK: - Subviews
+
+private extension EmptyProductListView {
     
-    private var productImage: some View {
+    var productImage: some View {
         Image(.addProduct)
             .resizable()
             .scaledToFit()
     }
     
-    private var title: some View {
+    var title: some View {
         Text("Давайте спланируем покупки!")
-            .font(titleFont)
+            .font(Font.Title3.medium)
             .foregroundStyle(.grey80)
     }
     
-    private var subtitle: some View {
+    var subtitle: some View {
         Text("Начните добавлять товары")
-            .font(subtitleFont)
+            .font(Font.Body.regular)
             .foregroundStyle(.grey80)
     }
 }

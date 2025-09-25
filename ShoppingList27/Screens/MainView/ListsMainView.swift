@@ -19,8 +19,8 @@ struct ListsMainView: View {
     @ObservedObject private var viewModel: ListsMainViewModel
     @State private var isCreatingNewList: Bool = false
     @AppStorage("ThemeType") private var selectedThemeType: ThemeType = .system
-    @Environment(\.colorScheme) private var colorScheme
     
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(NavigationRoute.self) private var router
     @Environment(\.modelContext) private var context
     
@@ -116,17 +116,18 @@ private extension ListsMainView {
         Menu {
             Picker(
                 selection: $selectedThemeType,
-                label: Label("Установить тему", systemImage: colorScheme == .dark
-                             ? ImageTitles.themeDark
-                             : ImageTitles.themeLight)
+                label: Label(
+                    Strings.installTema, systemImage: colorScheme == .dark
+                    ? ImageTitles.themeDark
+                    : ImageTitles.themeLight)
             ) {
-                Text("Светлая").tag(ThemeType.light)
-                Text("Темная").tag(ThemeType.dark)
-                Text("Системная").tag(ThemeType.system)
+                Text(Strings.brightTema).tag(ThemeType.light)
+                Text(Strings.darkTema).tag(ThemeType.dark)
+                Text(Strings.systemTema).tag(ThemeType.system)
             }
             .pickerStyle(.menu)
         } label: {
-            Image(systemName: ImageTitles.settingsMenu)
+            Image(ImageTitles.settingsMenu)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 24, height: 24)
@@ -158,7 +159,7 @@ private extension ListsMainView {
             editListButtonWasPressed(list: list)
         }
         label: {
-            Image(systemName: "square.and.pencil")
+            Image(ImageTitles.squareAndPencil)
         }
         .tint(.uniGrey)
     }
@@ -168,7 +169,7 @@ private extension ListsMainView {
             duplicatingListButtonWasPressed(list: list)
         }
         label: {
-            Image(systemName: "plus.square.on.square")
+            Image(ImageTitles.plusSquare)
         }
         .tint(.uniOrange)
     }
@@ -178,7 +179,7 @@ private extension ListsMainView {
             deleteListButtonWasPressed(list: list)
         }
         label: {
-            Image(systemName: "trash")
+            Image(ImageTitles.trash)
                 .environment(\.symbolVariants, .none)
         }
         .tint(.uniRed)
@@ -188,15 +189,24 @@ private extension ListsMainView {
 // MARK: - Constants
 
 private extension ListsMainView {
+    
     enum Strings {
         static let title = "Мои списки"
         static let createList = "Создать список"
+        static let installTema = "Установить тему"
+        static let brightTema = "Светлая"
+        static let darkTema = "Темная"
+        static let systemTema = "Системная"
     }
+    
     enum ImageTitles {
         static let settingsMenu = "ellipsis.circle"
         static let checkmark = "checkmark"
         static let themeLight = "circle.righthalf.filled"
         static let themeDark = "circle.lefthalf.filled"
+        static let trash = "trash"
+        static let plusSquare = "plus.square.on.square"
+        static let squareAndPencil = "square.and.pencil"
     }
 }
 

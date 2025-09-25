@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+// MARK: - ListItemView
+
 struct ListItemView: View {
     
     let item: ShoppingList
@@ -43,6 +45,8 @@ struct ListItemView: View {
         .cornerRadius(16)
     }
 }
+
+// MARK: - Preview
 
 #Preview {
     ListItemView(item: ShoppingListSample.contents[0])

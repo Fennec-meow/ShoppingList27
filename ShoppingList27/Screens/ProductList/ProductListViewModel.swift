@@ -8,9 +8,22 @@
 import SwiftUI
 import SwiftData
 
+// MARK: - ProductListViewModel
+
 @MainActor
 @Observable final class ProductListViewModel: ProductListViewModelProtocol {
-
+    
+    // MARK: Private Properties
+    
+    private let shoppingList: ShoppingList?
+    
+    // MARK: Public Properties
+    
+    var router: NavigationRoute?
+    var modelContext: ModelContext?
+    
+    var searchedProductName: String = ""
+    
     var listName: String {
         shoppingList?.title ?? "Unknown List"
     }
@@ -19,16 +32,16 @@ import SwiftData
         shoppingList?.productList ?? []
     }
     
-    var router: NavigationRoute?
-    var modelContext: ModelContext?
+    // MARK: Initializer
     
-    private let shoppingList: ShoppingList?
-
-    var searchedProductName: String = ""
-
     init(shoppingList: ShoppingList? = nil) {
         self.shoppingList = shoppingList
     }
+}
+
+// MARK: - Public Methods - ProductListViewModel
+
+extension ProductListViewModel {
     
     func setRouter(_ router: NavigationRoute?) {
         self.router = router
@@ -50,7 +63,6 @@ import SwiftData
         } catch {
             print("Something went wrong")
         }
-        
     }
     
     func editProduct(_ product: Product) {
@@ -89,20 +101,34 @@ protocol ProductListViewModelProtocol {
 
 @MainActor
 @Observable final class ProductListViewModelMock: ProductListViewModelProtocol {
-    func toggleProductIsBought(_ product: Product) {
-
-    }
-
+    
+    // MARK: Public Properties
+    
     let listName: String
     var products: [Product]
     var router: NavigationRoute?
-
+    
     var searchedProductName: String = ""
     
-    init(listName: String, products: [Product]? = nil, router: NavigationRoute? = nil) {
+    // MARK: Initializer
+    
+    init(
+        listName: String,
+        products: [Product]? = nil,
+        router: NavigationRoute? = nil
+    ) {
         self.listName = listName
         self.products = products ?? []
         self.router = router
+    }
+}
+
+// MARK: - Public Methods - ProductListViewModelMock
+
+extension ProductListViewModelMock {
+    
+    func toggleProductIsBought(_ product: Product) {
+        
     }
     
     func addProduct() {
@@ -122,7 +148,7 @@ protocol ProductListViewModelProtocol {
     }
     
     func setModelContext(_ modelContext: ModelContext) {
-
+        
     }
     
     func hideView() {
