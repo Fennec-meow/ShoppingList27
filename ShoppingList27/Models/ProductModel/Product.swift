@@ -15,7 +15,7 @@ final class Product {
     var unitMeasure: UnitOfMeasure
     var isBought: Bool
     
-    @Relationship var shoppingList: ShoppingList
+    @Relationship var shoppingList: ShoppingList?
     
     init(
         name: String,
@@ -34,7 +34,7 @@ final class Product {
 
 extension Product {
     enum UnitOfMeasure: String, Codable, CaseIterable, Identifiable {
-
+        
         /// Используем типичные значения для записи в БД, чтобы не было конфликтов при миграции
         case kilogram = "kg"
         case gram = "g"

@@ -8,13 +8,19 @@
 import SwiftUI
 import SwiftData
 
+// MARK: - ListEditorView
+
 /// Экран для создания новых списков и создания новых
 struct ListEditorView: View {
     
-    // MARK: - Private Properties
+    // MARK: Private Properties
     
     @Environment(\.modelContext) private var modelContext
     @Environment(NavigationRoute.self) private var router
+    
+    @State private var text: String
+    @State private var selectedColor: Color?
+    @State private var selectedIcon: String?
     
     private let buttonTitle: String
     private let errorText = "Это название уже используется, пожалуйста, измените его."
@@ -22,13 +28,7 @@ struct ListEditorView: View {
     private let shoppingList: ShoppingList?
     private let registeredTitles: [String]
     
-    // MARK: - Private Properties - State
-    
-    @State private var text: String
-    @State private var selectedColor: Color?
-    @State private var selectedIcon: String?
-    
-    // MARK: - Body
+    // MARK: Body
     
     var body: some View {
         VStack(spacing: .zero) {
@@ -54,27 +54,43 @@ struct ListEditorView: View {
         }
     }
     
-    // MARK: - Private Properties - Computed
+    // MARK: Initializer
     
-    private var isEditing: Bool {
+    init(shoppingList: ShoppingList? = nil, registeredTitles: [String]) {
+        text = shoppingList?.title ?? ""
+        selectedColor = shoppingList?.circleColor
+        selectedIcon = shoppingList?.circleIcon
+        self.shoppingList = shoppingList
+        buttonTitle = shoppingList == nil ? "Создать" : "Сохранить"
+        self.registeredTitles = registeredTitles
+    }
+}
+
+// MARK: - Private Properties
+
+private extension ListEditorView {
+    
+    var isEditing: Bool {
         shoppingList != nil
     }
     
-    private var isButtonEnabled: Bool {
+    var isButtonEnabled: Bool {
         !text.isEmpty && selectedColor != nil && selectedIcon != nil && !textFieldHasError
     }
     
-    private var textFieldHasError: Bool {
+    var textFieldHasError: Bool {
         if let shoppingList {
             registeredTitles.contains(text) && text != shoppingList.title
         } else {
             registeredTitles.contains(text)
         }
     }
+}
+// MARK: - Subviews
+
+private extension ListEditorView {
     
-    // MARK: - Subviews
-    
-    private var propertiesEditor: some View {
+    var propertiesEditor: some View {
         VStack(spacing: 24) {
             BaseTextField(
                 text: $text,
@@ -87,14 +103,14 @@ struct ListEditorView: View {
         }
     }
     
-    private var saveButton: some View {
+    var saveButton: some View {
         BaseButton(isActive: isButtonEnabled, title: buttonTitle) {
             applyChanges()
             router.pop()
         }
     }
     
-    private var backButton: some View {
+    var backButton: some View {
         Button {
             router.pop()
         } label: {
@@ -103,7 +119,7 @@ struct ListEditorView: View {
         .tint(.grey80)
     }
     
-    private var toolbarTitle: some View {
+    var toolbarTitle: some View {
         HStack(spacing: .zero) {
             Text(isEditing ? "Редактировать список" : "Создать список")
                 .font(Font.Headline.medium)
@@ -111,11 +127,15 @@ struct ListEditorView: View {
             Spacer()
         }
     }
-    
-    // MARK: - Private Methods
+}
+
+// MARK: - Private Methods
+
+private extension ListEditorView {
     
     func applyChanges() {
         guard let selectedColor, let selectedIcon else { return }
+        
         if isEditing {
             shoppingList?.title = text
             shoppingList?.circleColor = selectedColor
@@ -134,21 +154,10 @@ struct ListEditorView: View {
             print("ListEditorView.applyChanges: save error \(error)")
         }
     }
-    
-    // MARK: - Initializer
-    
-    init(shoppingList: ShoppingList? = nil, registeredTitles: [String]) {
-        text = shoppingList?.title ?? ""
-        selectedColor = shoppingList?.circleColor
-        selectedIcon = shoppingList?.circleIcon
-        self.shoppingList = shoppingList
-        buttonTitle = shoppingList == nil ? "Создать" : "Сохранить"
-        self.registeredTitles = registeredTitles
-    }
-    
 }
 
 // MARK: - Preview
+
 #Preview {
     NavigationStack {
         ListEditorView(shoppingList: nil, registeredTitles: ["123"])

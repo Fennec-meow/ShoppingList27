@@ -1,5 +1,7 @@
 import SwiftUI
 
+// MARK: - BaseTextField
+
 struct BaseTextField: View {
     
     @Binding var text: String
@@ -42,6 +44,8 @@ struct BaseTextField: View {
             }
         }
     }
+    
+    // MARK: Initializer
     
     init<F>(
         _ titleKey: String,
@@ -99,8 +103,9 @@ struct BaseTextField: View {
         self.errorText = errorText
         self.keyboardType = keyboardType
     }
-    
 }
+
+// MARK: - Preview - OldTextInit
 
 #Preview("OldTextInit") {
     @Previewable @State var text1 = ""
@@ -126,18 +131,23 @@ struct BaseTextField: View {
     }
 }
 
+// MARK: - Preview - NewTextInit
+
 #Preview("NewTextInit") {
     @Previewable @State var text = "Hello world"
     VStack(spacing: 20) {
-        BaseTextField("Text",
-                      text: $text,
-                      placeholder: "Текст",
-                      keyboardType: .default)
-        BaseTextField("Text",
-                      text: .constant("5"), // тут крестик работать не будет
-                      placeholder: "Текст",
-                      errorText: "Какая-то ошибка, пока не понятно в чем :)",
-                      keyboardType: .default
+        BaseTextField(
+            "Text",
+            text: $text,
+            placeholder: "Текст",
+            keyboardType: .default
+        )
+        BaseTextField(
+            "Text",
+            text: .constant("5"), // тут крестик работать не будет
+            placeholder: "Текст",
+            errorText: "Какая-то ошибка, пока не понятно в чем :)",
+            keyboardType: .default
         )
     }
     .padding()
@@ -150,17 +160,20 @@ struct BaseTextField: View {
 #Preview("OptionalValueInit") {
     @Previewable @State var value: Int? = 10
     VStack(spacing: 20) {
-        BaseTextField("Value",
-                      value: $value,
-                      format: .number,
-                      placeholder: "Количество",
-                      keyboardType: .numberPad)
-        BaseTextField("Value",
-                      value: .constant(5), // тут крестик работать не будет
-                      format: .number,
-                      placeholder: "Количество",
-                      errorText: "Какая-то ошибка, пока не понятно в чем :)",
-                      keyboardType: .numberPad
+        BaseTextField(
+            "Value",
+            value: $value,
+            format: .number,
+            placeholder: "Количество",
+            keyboardType: .numberPad
+        )
+        BaseTextField(
+            "Value",
+            value: .constant(5), // тут крестик работать не будет
+            format: .number,
+            placeholder: "Количество",
+            errorText: "Какая-то ошибка, пока не понятно в чем :)",
+            keyboardType: .numberPad
         )
     }
     .padding()

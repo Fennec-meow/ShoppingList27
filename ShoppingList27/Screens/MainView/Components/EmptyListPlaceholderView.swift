@@ -7,35 +7,33 @@
 
 import SwiftUI
 
+// MARK: - EmptyListPlaceholderView
+
 /// Плейсхолдер экрана "Давайте спланируем покупки".
 /// Отображает картинку и текстовые подсказки, по центру экрана.
 struct EmptyListPlaceholderView: View {
     
-    private enum Constants {
-        static let mainText = "Давайте спланируем покупки!"
-        static let subText = "Создайте свой первый список"
-        static let image = "createList"
-    }
-    
-    private let title3Medium = Font.system(size: 20, weight: .medium)
-    private let regular17 = Font.system(size: 17, weight: .regular)
-    
     var body: some View {
-            VStack(spacing: 28) {
-                imageContent
-                textContent
-            }
-            .frame(alignment: .center)
+        VStack(spacing: 28) {
+            imageContent
+            textContent
+        }
+        .frame(alignment: .center)
     }
+}
+
+// MARK: - Subviews
+
+private extension EmptyListPlaceholderView {
     
-    private var imageContent: some View {
+    var imageContent: some View {
         Image(Constants.image)
             .resizable()
             .scaledToFit()
             .frame(maxWidth: .infinity, maxHeight: 277)
     }
     
-    private var textContent: some View {
+    var textContent: some View {
         VStack(spacing: 4) {
             headlineText
             supportingText
@@ -43,15 +41,15 @@ struct EmptyListPlaceholderView: View {
         .frame(maxWidth: .infinity)
     }
     
-    private var headlineText: some View {
-        makePlaceholderText(Constants.mainText, font: title3Medium)
+    var headlineText: some View {
+        makePlaceholderText(Constants.mainText, font: Font.Title3.medium)
     }
     
-    private var supportingText: some View {
-        makePlaceholderText(Constants.subText, font: regular17)
+    var supportingText: some View {
+        makePlaceholderText(Constants.subText, font: Font.Body.regular)
     }
     
-    private func makePlaceholderText(_ text: String, font: Font) -> some View {
+    func makePlaceholderText(_ text: String, font: Font) -> some View {
         Text(text)
             .font(font)
             .foregroundColor(.grey80)
@@ -60,7 +58,19 @@ struct EmptyListPlaceholderView: View {
     }
 }
 
+// MARK: - Constants
+
+private extension EmptyListPlaceholderView {
+    
+    enum Constants {
+        static let mainText = "Давайте спланируем покупки!"
+        static let subText = "Создайте свой первый список"
+        static let image = "createList"
+    }
+}
+
 // MARK: - Preview
+
 struct PlanningShoppingPlaceholderViewPreviews: PreviewProvider {
     static var previews: some View {
         EmptyListPlaceholderView()
