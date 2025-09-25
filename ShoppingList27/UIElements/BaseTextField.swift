@@ -166,6 +166,6 @@ struct BaseTextField: View {
     .padding()
     .background(Color.backgroundScreen)
     .onChange(of: value) { _, newValue in
-        print(newValue)
+        print(newValue ?? "none")
     }
 }
