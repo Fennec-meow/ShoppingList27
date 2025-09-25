@@ -127,7 +127,7 @@ private extension ListsMainView {
             }
             .pickerStyle(.menu)
         } label: {
-            Image(ImageTitles.settingsMenu)
+            Image(systemName: ImageTitles.settingsMenu)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 24, height: 24)
@@ -159,7 +159,7 @@ private extension ListsMainView {
             editListButtonWasPressed(list: list)
         }
         label: {
-            Image(ImageTitles.squareAndPencil)
+            Image(systemName: ImageTitles.squareAndPencil)
         }
         .tint(.uniGrey)
     }
@@ -169,7 +169,7 @@ private extension ListsMainView {
             duplicatingListButtonWasPressed(list: list)
         }
         label: {
-            Image(ImageTitles.plusSquare)
+            Image(systemName: ImageTitles.plusSquare)
         }
         .tint(.uniOrange)
     }
@@ -179,7 +179,7 @@ private extension ListsMainView {
             deleteListButtonWasPressed(list: list)
         }
         label: {
-            Image(ImageTitles.trash)
+            Image(systemName: ImageTitles.trash)
                 .environment(\.symbolVariants, .none)
         }
         .tint(.uniRed)
