@@ -113,13 +113,6 @@ private extension ListsMainView {
     }
     
     var settingsMenu: some View {
-        Menu("SettingsMenu",
-             systemImage: ImageTitles.settingsMenu,
-             content: { })
-        .tint(Color.grey80)
-    }
-    
-    var settingsMenu: some View {
         Menu {
             Picker(
                 selection: $selectedThemeType,
