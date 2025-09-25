@@ -15,7 +15,7 @@ final class Product {
     var unitMeasure: UnitOfMeasure
     var isBought: Bool
     
-    @Relationship var shoppingList: ShoppingList
+    @Relationship var shoppingList: ShoppingList?
     
     init(
         name: String,
