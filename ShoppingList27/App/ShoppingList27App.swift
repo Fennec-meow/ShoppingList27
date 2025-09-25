@@ -8,6 +8,8 @@
 import SwiftUI
 import SwiftData
 
+// MARK: - ShoppingList27App
+
 @main
 struct ShoppingList27App: App {
     @AppStorage("hasCompleteOnboarding") private var hasCompleteOnboarding = false

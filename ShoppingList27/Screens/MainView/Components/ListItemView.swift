@@ -7,10 +7,12 @@
 
 import SwiftUI
 
+// MARK: - ListItemView
+
 struct ListItemView: View {
     
     let item: ShoppingList
-        
+    
     var body: some View {
         HStack(spacing: 0) {
             
@@ -44,9 +46,11 @@ struct ListItemView: View {
     }
 }
 
+// MARK: - Preview
+
 #Preview {
     ListItemView(item: ShoppingListSample.contents[0])
-    .padding(.horizontal)
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .background(Color.backgroundScreen)
+        .padding(.horizontal)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.backgroundScreen)
 }

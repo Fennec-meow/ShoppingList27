@@ -8,18 +8,14 @@
 import SwiftUI
 import SwiftData
 
+// MARK: - ProductListView
+
 struct ProductListView: View {
     
     @Environment(NavigationRoute.self) private var router
     @Environment(\.modelContext) private var modelContext
     
     @State var viewModel: ProductListViewModelProtocol
-    
-    private let backButtonTitleFont: Font = Font.Headline.medium
-    
-    init(selectedShoppingList: ShoppingList, viewModel: ProductListViewModelProtocol? = nil) {
-        self.viewModel = viewModel ?? ProductListViewModel(shoppingList: selectedShoppingList)
-    }
     
     var body: some View {
         mainView
@@ -37,6 +33,20 @@ struct ProductListView: View {
                 self.viewModel.setModelContext(modelContext)
             }
     }
+    
+    // MARK: Initializer
+    
+    init(
+        selectedShoppingList: ShoppingList,
+        viewModel: ProductListViewModelProtocol? = nil
+    ) {
+        self.viewModel = viewModel ?? ProductListViewModel(shoppingList: selectedShoppingList)
+    }
+}
+
+// MARK: - Subviews
+
+private extension ProductListView {
     
     private var mainView: some View {
         ZStack(alignment: .bottom) {
@@ -69,7 +79,7 @@ struct ProductListView: View {
         }
     }
     
-    private var productListTable: some View {
+    var productListTable: some View {
         List {
             let id = viewModel.products.first?.id
             ForEach(viewModel.products, id: \.id) { product in
@@ -89,12 +99,12 @@ struct ProductListView: View {
         .listStyle(.plain)
     }
     
-    private var backButtonTitle: some View {
+    var backButtonTitle: some View {
         Text(viewModel.listName)
-            .font(backButtonTitleFont)
+            .font(Font.Headline.medium)
     }
     
-    private var backButton: some View {
+    var backButton: some View {
         Button {
             viewModel.hideView()
         } label: {
@@ -106,7 +116,7 @@ struct ProductListView: View {
         .tint(.grey80)
     }
     
-    private var optionsButton: some View {
+    var optionsButton: some View {
         Button {
             optionsButtonWasTapped()
         } label: {
@@ -114,8 +124,13 @@ struct ProductListView: View {
         }
         .tint(.grey80)
     }
+}
+
+// MARK: - Private Methods
+
+private extension ProductListView {
     
-    private func createDeleteProductButton(product: Product) -> some View {
+    func createDeleteProductButton(product: Product) -> some View {
         Button {
             deleteProductButtonWasPressed(product: product)
         }
@@ -126,7 +141,7 @@ struct ProductListView: View {
         .tint(.uniRed)
     }
     
-    private func createEditProductButton(product: Product) -> some View {
+    func createEditProductButton(product: Product) -> some View {
         Button {
             editProductButtonWasPressed(product: product)
         }
@@ -136,38 +151,39 @@ struct ProductListView: View {
         .tint(.uniGrey)
     }
     
-    private func addProductButtonWasTapped() {
+    func addProductButtonWasTapped() {
         viewModel.addProduct()
     }
     
-    private func optionsButtonWasTapped() {
+    func optionsButtonWasTapped() {
         print("Tapped options button")
     }
     
-    private func deleteProductButtonWasPressed(product: Product) {
+    func deleteProductButtonWasPressed(product: Product) {
         viewModel.deleteProduct(product)
     }
     
-    private func editProductButtonWasPressed(product: Product) {
+    func editProductButtonWasPressed(product: Product) {
         viewModel.editProduct(product)
     }
     
-    private func productCellCheckBoxWasPressed(_ product: Product) {
+    func productCellCheckBoxWasPressed(_ product: Product) {
         viewModel.toggleProductIsBought(product)
     }
 }
+// MARK: - Preview
 
 #Preview {
-//    @Previewable @State var hasCompletedOnboarding: Bool = true
-//    
-//    let products: [Product] = ProductSample.contents
+    //    @Previewable @State var hasCompletedOnboarding: Bool = true
+    //
+    //    let products: [Product] = ProductSample.contents
     
-//    let list: ShoppingList = ShoppingList(title: "Новый год", circleColor: .blue, circleIcon: Image(systemName: "plus))")
-//    
-//    let viewModel = ProductListViewModelMock(listName: "Новый год", products: products)
-//    let router = NavigationRoute()
-//    
-//    VStack {
-//        ProductListView(viewModel: viewModel)
-//    }
+    //    let list: ShoppingList = ShoppingList(title: "Новый год", circleColor: .blue, circleIcon: Image(systemName: "plus))")
+    //
+    //    let viewModel = ProductListViewModelMock(listName: "Новый год", products: products)
+    //    let router = NavigationRoute()
+    //
+    //    VStack {
+    //        ProductListView(viewModel: viewModel)
+    //    }
 }

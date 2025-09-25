@@ -82,7 +82,6 @@ extension Font {
     enum Title3 {
         /// Давайте спланируем покупки!
         /// Новый год / Кошке / Вечеринка малого
-        /// Давайте спланируем покупки!
         static var medium: Font {
             Font.system(size: 20, weight: .medium)
         }
