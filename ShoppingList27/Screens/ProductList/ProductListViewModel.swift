@@ -6,28 +6,69 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @MainActor
 @Observable final class ProductListViewModel: ProductListViewModelProtocol {
-    let listName: String
-    var products: [Product] = []
+
+    var listName: String {
+        shoppingList?.title ?? "Unknown List"
+    }
+    
+    var products: [Product] {
+        shoppingList?.productList ?? []
+    }
+    
+    var router: NavigationRoute?
+    var modelContext: ModelContext?
+    
+    private let shoppingList: ShoppingList?
 
     var searchedProductName: String = ""
+
+    init(shoppingList: ShoppingList? = nil) {
+        self.shoppingList = shoppingList
+    }
     
-    init(listName: String) {
-        self.listName = listName
+    func setRouter(_ router: NavigationRoute?) {
+        self.router = router
+    }
+    
+    func setModelContext(_ modelContext: ModelContext) {
+        self.modelContext = modelContext
     }
     
     func addProduct() {
-
+        guard let shoppingList else { return }
+        router?.showSheet(.createProduct(list: shoppingList, product: nil))
     }
     
     func deleteProduct(_ product: Product) {
-
+        do {
+            modelContext?.delete(product)
+            try modelContext?.save()
+        } catch {
+            print("Something went wrong")
+        }
+        
     }
     
     func editProduct(_ product: Product) {
-
+        guard let shoppingList else { return }
+        router?.showSheet(.createProduct(list: shoppingList, product: product))
+    }
+    
+    func toggleProductIsBought(_ product: Product) {
+        do {
+            product.isBought.toggle()
+            try modelContext?.save()
+        } catch {
+            print("Something went wrong")
+        }
+    }
+    
+    func hideView() {
+        router?.pop()
     }
 }
 
@@ -40,18 +81,28 @@ protocol ProductListViewModelProtocol {
     func addProduct()
     func deleteProduct(_ product: Product)
     func editProduct(_ product: Product)
+    func setRouter(_ router: NavigationRoute?)
+    func hideView()
+    func setModelContext(_ modelContext: ModelContext)
+    func toggleProductIsBought(_ product: Product)
 }
 
 @MainActor
 @Observable final class ProductListViewModelMock: ProductListViewModelProtocol {
+    func toggleProductIsBought(_ product: Product) {
+
+    }
+
     let listName: String
     var products: [Product]
+    var router: NavigationRoute?
 
     var searchedProductName: String = ""
     
-    init(listName: String, products: [Product]? = nil) {
+    init(listName: String, products: [Product]? = nil, router: NavigationRoute? = nil) {
         self.listName = listName
         self.products = products ?? []
+        self.router = router
     }
     
     func addProduct() {
@@ -64,5 +115,17 @@ protocol ProductListViewModelProtocol {
     
     func editProduct(_ product: Product) {
         print("Selected to edit product: \(product.name)")
+    }
+    
+    func setRouter(_ router: NavigationRoute?) {
+        
+    }
+    
+    func setModelContext(_ modelContext: ModelContext) {
+
+    }
+    
+    func hideView() {
+        
     }
 }
